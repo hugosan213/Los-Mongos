@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Versum</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="Imagenes/Versum.png" alt="Logo Versum" style="height:50px;">
+                <span class="ml-2 font-weight-bold text-primary">Versum</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav mr-3">
+                    <li class="nav-item"><a class="nav-link" href="inicio.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contac.html">Contacto</a></li>
+                </ul>
+                <a href="login.html" class="btn btn-primary rounded-pill px-4">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="faq-header mt-5 pt-4">
+        <div class="container text-center">
+        <h1>Contáctanos</h1>
+        <p class="faq-subtitle">Estamos listos para ayudarte. Completa el formulario o elige una de nuestras vías de contacto.</p>
+        </div>
+    </header>
+  
+
+    <!-- CONTACT BLOCK -->
+    <section class="faq-contact-block container">
+        <div class="row">
+            <!-- Formulario -->
+            <div class="col-md-6 mb-4">
+                <form>
+                    <input type="text" class="form-control mb-3" placeholder="Nombre completo" required>
+                    <input type="email" class="form-control mb-3" placeholder="Correo electrónico" required>
+                    <input type="text" class="form-control mb-3" placeholder="Asunto" required>
+                    <textarea class="form-control mb-3" rows="5" placeholder="Mensaje" required></textarea>
+                    <button type="submit" class="faq-contact-btn">Enviar Mensaje</button>
+                </form>
+            </div>
+
+            <!-- Información de contacto -->
+            <div class="col-md-6">
+                <h2>Información de contacto</h2>
+                <p>Teléfono: <strong>+54 9 1234 5678</strong></p>
+                <p>Email: <strong>contacto@versum.com</strong></p>
+                
+                
+                <div class="faq-contact-links mt-4">
+                    <a href="https://wa.me/5412345678" target="_blank" class="faq-contact-btn whatsapp">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"> Enviar WhatsApp
+                    </a>
+                    <a href="mailto:contacto@versum.com" class="faq-contact-btn">✉️ Enviar Mail</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
