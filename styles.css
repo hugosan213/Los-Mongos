@@ -190,3 +190,46 @@
     text-decoration: underline;
 }
 
+/* === pasar para que quede bien === */
+/* === SERVICIOS: IMÁGENES === */
+.service-item img {
+    width: 100%;          /* ocupa todo el ancho disponible */
+    height: 200px;        /* altura uniforme */
+    object-fit: cover;    /* recorta la imagen sin deformarla */
+    border-radius: 8px;   /* esquinas redondeadas */
+    margin-bottom: 15px;  /* separación con el texto */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* sombra ligera */
+}
+
+
+/* === BENEFICIOS === */
+.beneficios h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+.beneficios p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+/* === CTA FINAL === */
+.cta-final h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.cta-final p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+.cta-final .btn {
+    border-radius: 50px;
+    padding: 12px 40px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+.cta-final .btn:hover {
+    background-color: #17a673;
+}
