@@ -21,9 +21,9 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav mr-3">
-                    <li class="nav-item"><a class="nav-link" href="inicio.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html">FAQ</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="contac.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contacto.html">Contacto</a></li>
                     <!-- Dropdown con estilo de mega menu -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,14 +34,14 @@
                         <div class="row">
                             <!-- Producto 1 -->
                             <div class="col-6 d-flex mb-3 producto-menu-item" data-url="calendario_producto.html" style="cursor:pointer;">
-                            <img src="Imagenes/CALENDARIO.jpg" alt="Calendario" class="menu-img">
+                            <img src="Imagenes/CALENDARIO_DROPDOWN.png" alt="Calendario" class="menu-img">
                             <div>
                                 <strong>Calendario de Google</strong>
                                 <p class="mb-0 text-muted">Gestiona turnos de forma eficiente.</p>
                             </div>
                             </div>
                             <!-- Producto 2 -->
-                            <div class="col-6 d-flex mb-3 producto-menu-item" data-url="Wspp_producto.html" style="cursor:pointer;">
+                            <div class="col-6 d-flex mb-3 producto-menu-item" data-url="whatsapp_producto.html" style="cursor:pointer;">
                             <img src="Imagenes/whatsapp.png" alt="WhatsApp" class="menu-img">
                             <div>
                                 <strong>WhatsApp</strong>
@@ -52,13 +52,13 @@
                         </div>
                     </li>
                 </ul>
-                <a href="login.html" class="btn btn-primary rounded-pill px-4">Login</a>
+                <a href="solicitar_servicio.html" class="btn btn-primary rounded-pill px-4">Solicitar Servicio</a>
             </div>
         </div>
     </nav>
 
     <!-- HEADER -->
-    <header class="faq-header mt-5 pt-4">
+    <header class="header mt-5 pt-4">
         <div class="container text-center">
         <h1>Contáctanos</h1>
         <p class="faq-subtitle">Estamos listos para ayudarte. Completa el formulario o elige una de nuestras vías de contacto.</p>
@@ -71,17 +71,17 @@
         <div class="row">
             <!-- Formulario -->
             <div class="col-md-6 mb-4">
-                <form>
-                    <input type="text" class="form-control mb-3" placeholder="Nombre completo" required>
-                    <input type="email" class="form-control mb-3" placeholder="Correo electrónico" required>
-                    <input type="text" class="form-control mb-3" placeholder="Asunto" required>
-                    <textarea class="form-control mb-3" rows="5" placeholder="Mensaje" required></textarea>
+                <form action="https://formspree.io/f/mrbaandq" method="POST"> <!-- Utilizo un endpoint de Formspree para que al enviar el formulario lo envio a nuestro gmail de los mongos -->
+                    <input type="text" name="nombre" class="form-control mb-3" placeholder="Nombre completo" required>
+                    <input type="email" name="email" class="form-control mb-3" placeholder="Correo electrónico" required>
+                    <input type="text" name="asunto" class="form-control mb-3" placeholder="Asunto" required>
+                    <textarea class="form-control mb-3" name="mensaje" rows="5" placeholder="Mensaje" required></textarea>
                     <button type="submit" class="faq-contact-btn">Enviar Mensaje</button>
                 </form>
             </div>
 
             <!-- Información de contacto -->
-            <div class="col-md-6">
+            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center h-100"> <!--Centra el texto vertiaclmente-->
                 <h2>Información de contacto</h2>
                 <p>Teléfono: <strong>+54 9 1234 5678</strong></p>
                 <p>Email: <strong>contacto@versum.com</strong></p>
@@ -100,6 +100,15 @@
     <!-- Agrega los scripts de Bootstrap justo antes de cerrar el body para que el dropdown funcione -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      // Hacer clic en los productos del mega menú para navegar
+      document.querySelectorAll('.producto-menu-item').forEach(function(item){
+        item.addEventListener('click', function(){
+          window.location.href = item.getAttribute('data-url');
+        });
+      });
+    </script>
 
 </body>
 </html>

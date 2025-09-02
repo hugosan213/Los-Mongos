@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <!-- Producto 2 -->
-                            <div class="col-6 d-flex mb-3" onclick="window.location.href='Wspp_producto.html'">
+                            <div class="col-6 d-flex mb-3" onclick="window.location.href='whatsapp_producto.html'">
                                 <img src="Imagenes/whatsapp.png" alt="WhatsApp" class="menu-img">
                                 <div>
                                     <strong>WhatsApp</strong>
@@ -54,72 +54,10 @@
 
                 <li class="nav-item active"><a class="nav-link" href="contac.html">Contacto <span class="sr-only">(actual)</span></a></li>
             </ul>
-            <a href="login.html" class="btn btn-primary rounded-pill px-4">Login</a>
+            <a href="solicitar_servicio.html" class="btn btn-primary rounded-pill px-4">Solicitar Servicio</a>
         </div>
     </div>
 </nav>
-
-<!-- HEADER -->
-<header class="faq-header mt-5 pt-6">
-    <div class="container text-center">
-        <h1>Los productos que ofrecemos</h1>
-        <p class="faq-subtitle">Estos son los productos que ofrecemos con full servicios y blah blah</p>
-    </div>
-</header>
-
-<!-- PRODUCTO GOOGLE -->
-<div class="producto-flex">
-    <img class="producto-img" src="Imagenes/CALENDARIO.jpg" alt="Calendario de Google">
-    <div class="producto-info">
-        <div class="producto-nombre">Calendario de Google</div>
-        <div class="producto-descripcion">Un calendario orientado a gestionar tus turnos con tus pacientes de manera eficiente y personalizada</div>
-        <div class="producto-extra" style="display:none;">
-            <strong>Más información:</strong><br>
-            - Sincronización con Google y Outlook<br>
-            - Notificaciones automáticas a tus pacientes<br>
-            - Gestión de múltiples agendas<br>
-            - Acceso desde cualquier dispositivo<br>
-            - Soporte y actualizaciones incluidas
-        </div>
-    </div>
-</div>
-
-<!-- PRODUCTO WHATSAPP -->
-<div class="producto-flex">
-    <img class="producto-img" src="Imagenes/whatsapp.png" alt="WhatsApp">
-    <div class="producto-info">
-        <div class="producto-nombre">Whatsapp</div>
-        <div class="producto-descripcion">Un Whatsapp orientado a gestionar tus turnos con tus pacientes de manera eficiente y personalizada</div>
-        <div class="producto-extra" style="display:none;">
-            <strong>Más información:</strong><br>
-            - Mensajería instantánea con pacientes<br>
-            - Recordatorios automáticos<br>
-            - Integración con agenda<br>
-            - Soporte multiplataforma<br>
-            - Seguridad y privacidad
-        </div>
-    </div>
-</div>
-
-<!-- BOOTSTRAP JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-// Toggle info extra en Google
-document.querySelectorAll('.producto-flex').forEach(function(flex){
-    flex.addEventListener('click', function(){
-        var extra = flex.querySelector('.producto-extra');
-        if(extra) extra.style.display = (extra.style.display === 'block') ? 'none' : 'block';
-    });
-});
-// Redirigir WhatsApp
-document.querySelectorAll('.productowspp-flex').forEach(function(flex){
-    flex.addEventListener('click', function(){
-        window.location.href = 'Wspp.html';
-    });
-});
-</script>
 
 </body>
 </html>

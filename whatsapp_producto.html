@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ - Versum</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Bootstrap solo para navbar -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="Imagenes/Versum.png" alt="Logo Versum" style="height:50px;">
+        <span class="ml-2 font-weight-bold text-primary">Versum</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav mr-3">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link " href="faq.html">FAQ</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+          <!-- Dropdown con estilo de mega menu -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="productosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Productos
+            </a>
+            <div class="dropdown-menu mega-dropdown shadow p-4" aria-labelledby="productosDropdown">
+              <h6 class="text-muted mb-3">PRODUCTOS</h6>
+              <div class="row">
+                <!-- Producto 1 -->
+                <div class="col-6 d-flex mb-3 producto-menu-item" data-url="calendario_producto.html" style="cursor:pointer;">
+                  <img src="Imagenes/CALENDARIO_DROPDOWN.png" alt="Calendario" class="menu-img">
+                  <div>
+                    <strong>Calendario de Google</strong>
+                    <p class="mb-0 text-muted">Gestiona turnos de forma eficiente.</p>
+                  </div>
+                </div>
+                <!-- Producto 2 -->
+                <div class="col-6 d-flex mb-3 producto-menu-item" data-url="whatsapp_producto.html" style="cursor:pointer;">
+                  <img src="Imagenes/whatsapp.png" alt="WhatsApp" class="menu-img">
+                  <div>
+                    <strong>WhatsApp</strong>
+                    <p class="mb-0 text-muted texto-movible">Atiende pacientes por WhatsApp fácilmente.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        
+        <a href="solicitar_servicio.html" class="btn btn-primary rounded-pill px-4">Solicitar Servicio</a>
+      </div>
+    </div>
+    
+  </nav>
+
+
+  <!-- PRODUCTO WHATSAPP -->
+<div class="producto-flex">
+    <img class="producto-wspp" src="Imagenes/whatsapp.png" alt="WhatsApp">
+    <div class="producto-info">
+        <div class="producto-nombre">Whatsapp</div>
+        <div class="producto-descripcion">Un Whatsapp orientado a gestionar tus turnos con tus pacientes de manera eficiente y personalizada</div>
+        <div class="producto-extra" style="display:none;">
+            <strong>Más información:</strong><br>
+            - Mensajería instantánea con pacientes<br>
+            - Recordatorios automáticos<br>
+            - Integración con agenda<br>
+            - Soporte multiplataforma<br>
+            - Seguridad y privacidad
+        </div>
+    </div>
+</div>
+
+<!-- BOOTSTRAP JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Toggle info extra en Google
+document.querySelectorAll('.producto-flex').forEach(function(flex){
+    flex.addEventListener('click', function(){
+        var extra = flex.querySelector('.producto-extra');
+        if(extra) extra.style.display = (extra.style.display === 'block') ? 'none' : 'block';
+    });
+});
+// Redirigir WhatsApp
+document.querySelectorAll('.productowspp-flex').forEach(function(flex){
+    flex.addEventListener('click', function(){
+        window.location.href = 'whatsapp_producto.html';
+    });
+});
+// Hacer clic en los productos del mega menú para navegar
+  document.querySelectorAll('.producto-menu-item').forEach(function(item){
+    item.addEventListener('click', function(){
+      window.location.href = item.getAttribute('data-url');
+    });
+  });
+</script>
+
+</body>
+</html>

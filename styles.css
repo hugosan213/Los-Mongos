@@ -3,11 +3,13 @@
   background: #f7f9fc;
   padding: 3rem 1rem;
   margin-bottom: 2rem;
+  
 }
-.faq-header h1 {
+.header h1 { /* CON ESTE STYLE MODIFICO TODOS LOS HEADERS DE TODAS LAS PAGINAS*/
   font-size: 2.2rem;
   font-weight: bold;
   color: #222;
+  margin: 30px auto 40px auto; /* Aumenta el margen superior para bajar el flex */
 }
 .faq-subtitle {
   color: #555;
@@ -22,6 +24,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+    
 }
 .faq-item {
   background: #fff;
@@ -70,6 +73,7 @@
   border-radius: 12px;
   margin: 2rem auto;
   max-width: 700px;
+  
 }
 .faq-contact-block h2 {
   font-size: 1.6rem;
@@ -246,7 +250,7 @@
 }
 .mega-dropdown .row {
   display: flex;
-  gap: 32px;
+  gap: 5px;
   justify-content: center;
 }
 .mega-dropdown .col-6 {
@@ -256,8 +260,8 @@
   padding: 18px 18px 12px 18px;
   display: flex;
   align-items: center;
-  gap: 18px;
-  min-width: 220px;
+  gap: 15px;
+  min-width: 350px;
   cursor: pointer;
   transition: box-shadow 0.2s, transform 0.2s;
 }
@@ -315,7 +319,7 @@
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 1800px;
-  margin: 40px auto;
+  margin: 120px auto 40px auto; /* Aumenta el margen superior para bajar el flex */
   gap: 40px;
 }
 .producto-img {
@@ -345,44 +349,13 @@
 }
 
 /* === PRODUCTO WHATSAPP === */
-.productowspp-flex {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  background: linear-gradient(135deg, #d8d6d6 0%, #ececf3 50%, #b9b9b9 100%);
-  padding: 30px;
-  border-radius: 40px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 1800px;
-  margin: 40px auto;
-  gap: 40px;
-}
-.productowspp-img {
-  width: 300px;
-  border-radius: 50px;
+
+.producto-wspp {
+  width: 150px; /* Reducir el tamaño de la imagen */
+  border-radius: 10px;
   flex-shrink: 0;
 }
-.productowspp-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-.productowspp-nombre {
-  font-size: 2em;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.productowspp-descripcion {
-  font-size: 1em;
-  color: #555;
-  text-align: center;
-  max-width: 500px;
-}
+
 
 /* === ANIMACIONES === */
 @keyframes aparecerUp {
