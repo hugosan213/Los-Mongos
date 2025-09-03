@@ -1,108 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FAQ - Versum</title>
-  <link rel="stylesheet" href="faq.css" />
-  <link rel="stylesheet" href="navbar.css" />
-  <!-- Bootstrap solo para navbar -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FAQ - Versum</title>
+    <link rel="stylesheet" href="faq.css" />
+    <link rel="stylesheet" href="navbar.css" />
+    <!-- Bootstrap solo para navbar -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
 
-<body>
-  
-  <!-- NAVBAR -->
+  <body>
+    <!-- NAVBAR -->
     <div id="navbar-container"></div>
     <script src="navbar.js"></script>
 
-  <!-- HEADER -->
-  <header class="header mt-5 pt-4">
-    <div class="container text-center">
-      <h1>Preguntas Frecuentes</h1>
-      <p class="faq-subtitle">Respuestas rápidas a las dudas más comunes sobre Versum. Si tienes otra consulta, ¡contáctanos!</p>
-    </div>
-  </header>
+    <!-- HEADER -->
+    <header class="header mt-5 pt-4">
+      <div class="container text-center">
+        <h1>Preguntas Frecuentes</h1>
+        <p class="faq-subtitle">
+          Respuestas rápidas a las dudas más comunes sobre Versum. Si tienes
+          otra consulta, ¡contáctanos!
+        </p>
+      </div>
+    </header>
 
-  <!-- MAIN -->
-  <main class="faq-main container">
-    <!-- LISTA FAQ -->
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>¿Qué es Versum?</span>
-          <span class="faq-icon">+</span>
+    <!-- MAIN -->
+    <main class="faq-main container">
+      <!-- LISTA FAQ -->
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>¿Qué es Versum?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Versum es una plataforma que te permite gestionar y reservar turnos
+            de manera centralizada: para peluquerías, canchas deportivas y
+            consultas médicas.
+          </div>
         </div>
-        <div class="faq-answer">
-          Versum es una plataforma que te permite gestionar y reservar turnos de manera centralizada: para peluquerías, canchas deportivas y consultas médicas.
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>¿Cómo puedo Solicitar el servicio?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Para registrarte, haz clic en el botón "Registrarse" y completa el
+            formulario con tus datos personales. Luego podrás iniciar sesión y
+            comenzar a reservar tus turnos.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>¿Puedo cancelar o cambiar un turno?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Sí, desde tu panel de usuario puedes cancelar o reprogramar tus
+            turnos según la disponibilidad de cada servicio.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>¿Es necesario pagar por usar Versum?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Crear una cuenta y gestionar tus turnos es completamente gratuito.
+            Algunos servicios pueden requerir pagos externos, que se gestionan
+            directamente con el proveedor.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>¿Puedo usar Versum desde mi celular?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            Sí, Versum es totalmente responsive y se puede usar desde cualquier
+            dispositivo móvil o tablet sin necesidad de instalar aplicaciones
+            adicionales.
+          </div>
         </div>
       </div>
 
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>¿Cómo puedo Solicitar el servicio?</span>
-          <span class="faq-icon">+</span>
+      <!-- CONTACTO -->
+      <section class="faq-contact-block text-center">
+        <h2>¿Tienes más dudas?</h2>
+        <p>Puedes escribirnos y te responderemos a la brevedad.</p>
+        <div class="faq-contact-links">
+          <a href="mailto:contacto@versum.com" class="faq-contact-btn"
+            >✉️ Contactar por Email</a
+          >
+          <a
+            href="https://wa.me/5491112345678"
+            class="faq-contact-btn whatsapp"
+            target="_blank"
+          >
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+              alt="WhatsApp"
+            />
+            Contactar por WhatsApp
+          </a>
         </div>
-        <div class="faq-answer">
-          Para registrarte, haz clic en el botón "Registrarse" y completa el formulario con tus datos personales. Luego podrás iniciar sesión y comenzar a reservar tus turnos.
-        </div>
-      </div>
+      </section>
+    </main>
 
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>¿Puedo cancelar o cambiar un turno?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-answer">
-          Sí, desde tu panel de usuario puedes cancelar o reprogramar tus turnos según la disponibilidad de cada servicio.
-        </div>
-      </div>
+    <!-- FOOTER -->
+    <footer class="faq-footer text-center">
+      <p>
+        &copy; 2025 Versum. Todos los derechos reservados. |
+        <a href="#">Términos</a> | <a href="#">Privacidad</a>
+      </p>
+    </footer>
 
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>¿Es necesario pagar por usar Versum?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-answer">
-          Crear una cuenta y gestionar tus turnos es completamente gratuito. Algunos servicios pueden requerir pagos externos, que se gestionan directamente con el proveedor.
-        </div>
-      </div>
+    <!-- Script FAQ -->
 
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>¿Puedo usar Versum desde mi celular?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-answer">
-          Sí, Versum es totalmente responsive y se puede usar desde cualquier dispositivo móvil o tablet sin necesidad de instalar aplicaciones adicionales.
-        </div>
-      </div>
-    </div>
-
-    <!-- CONTACTO -->
-    <section class="faq-contact-block text-center">
-      <h2>¿Tienes más dudas?</h2>
-      <p>Puedes escribirnos y te responderemos a la brevedad.</p>
-      <div class="faq-contact-links">
-        <a href="mailto:contacto@versum.com" class="faq-contact-btn">✉️ Contactar por Email</a>
-        <a href="https://wa.me/5491112345678" class="faq-contact-btn whatsapp" target="_blank">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"> Contactar por WhatsApp
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="faq-footer text-center">
-    <p>&copy; 2025 Versum. Todos los derechos reservados. | 
-      <a href="#">Términos</a> | <a href="#">Privacidad</a>
-    </p>
-  </footer>
-
-  <!-- Script FAQ -->
-  
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Script para expandir/cerrar las respuestas de FAQ
+      document.addEventListener("DOMContentLoaded", function () {
+        const faqItems = document.querySelectorAll(".faq-item");
+        faqItems.forEach((item) => {
+          item
+            .querySelector(".faq-question")
+            .addEventListener("click", function () {
+              item.classList.toggle("active");
+            });
+        });
+      });
+    </script>
+  </body>
 </html>
