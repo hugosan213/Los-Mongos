@@ -1,0 +1,247 @@
+:root {
+  --color-primary: #4b0082;
+  --color-muted: #22315fc2;
+}
+
+body {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh;
+  background: rgb(0 0 0 / 100%) url('../assets/fondo_login.jpg') no-repeat center center;
+  background-size: cover;
+  color: #ffffff;
+  padding-right: 20vw;
+  position: static;
+}
+/* HEADER */
+header {
+  position: absolute;   
+  top: 1vh;
+  left: 1vw;
+  z-index: 10;          
+}
+
+header button {
+  display: flex;
+  align-items: center;
+  gap: 0.5vw;
+  padding: 1vh 2vw;
+  font-size: 2vh;
+  border-radius: 5vh;
+  background: #4b0082;
+  box-shadow: 4px 4px 8px rgb(110, 110, 110);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+header button::before {
+  content: "←";   /* flecha */
+  font-size: 2.2vh;
+}
+
+.imagen_versum {
+  width: 380px;
+  position: fixed;
+  top: -124px;
+  left: auto;
+  right: auto;
+  transform: none;
+  max-width: none;
+  min-width: 0;
+  height: auto;
+  z-index: 3;
+}
+
+/* Login */
+.login {
+  position: relative;
+  z-index: 2;
+  background: rgba(240, 240, 240, 0.992);
+  background-size: cover;
+  backdrop-filter: blur(50px) saturate(180%);
+  -webkit-backdrop-filter: blur(50px) saturate(180%);
+  border-radius: 28px;
+  padding: 109px 32px 48px;
+  width: 500px;
+  min-width: 0;
+  max-width: none;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 3px solid rgba(187, 186, 186, 0.2);
+  box-shadow: 0px 4px 8px rgb(110, 110, 110, 0.1);
+  max-height: 750px;
+  overflow-y: visible;
+}
+
+.login h2 {
+  font-size: 4vh;
+  margin: 1vh 0 1vh;
+  color: var(--color-primary);
+  white-space: normal;
+  overflow: visible;
+  text-overflow: ellipsis;
+}
+
+label, input {
+  transition: 0.3s;
+}
+
+.login h3 {
+  color: var(--color-primary);
+  font-size: 2.5vh;
+  margin: 0 0 4vh;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: ellipsis;
+}
+
+.login form {
+  display: grid;
+  gap: 2vh;
+  color: #22315f;
+  width: 80%;
+  margin: 0 0 3vh;
+}
+
+.login :is(input, button) {
+  height: 6vh;
+  padding: 0 2vw;
+  border: 0;
+  border-radius: 4vh;
+  box-sizing: border-box;
+}
+
+.login .textbox {
+  position: relative;
+}
+
+.textbox label {
+  position: absolute;
+  top: 50%;
+  left: 2vw;
+  translate: 0 -50%;
+  transform-origin: 0 50%;
+  pointer-events: none;
+  color: var(--color-primary);
+}
+
+.textbox input {
+  width: 100%;
+  padding-top: 1vh;
+  background: rgb(255, 255, 255);
+  outline: none;
+  color: inherit;
+  box-shadow: 0 0 0 1vh transparent;
+  padding: 0 2vw;
+  line-height: 6vh;
+}
+
+.textbox input:focus {
+  box-shadow: 0 0 0 0.3vh var(--color-primary);
+}
+
+.textbox input:is(:focus, :not(:invalid)) ~ label {
+  scale: 0.725;
+  translate: 0 -112%;
+}
+
+.login button {
+  color: #ffffff;
+  background: var(--color-primary);
+  font-size: 2.5vh;
+}
+
+.login button:hover {
+  background: #8434bd;
+}
+
+.login a {
+  font-size: 1.5vh;
+  color: var(--color-primary);
+}
+
+.login p {
+  margin: 3vh 0 0;
+  font-size: 2vh;
+  color: var(--color-primary);
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: -1vw;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+  font-size: 3vh;
+  z-index: 2;
+}
+@media (max-width: 900px) {
+  body {
+    padding-right: 5vw;
+  }
+  .login {
+    width: 60vw;
+    min-width: 220px;
+    max-width: 90vw;
+    padding: 8vh 2vw 4vh;
+    border-radius: 3vh;
+    margin-top: 14vh;
+  }
+  .imagen_versum {
+    width: 40vw;
+    max-width: 220px;
+    min-width: 80px;
+    top: 6vh;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    justify-content: center;
+    align-items: flex-start;
+    padding-right: 0;
+  }
+  .login {
+    width: 95vw;
+    min-width: 0;
+    max-width: 100vw;
+    padding: 4vh 2vw 2vh;
+    border-radius: 2vh;
+    box-shadow: none;
+    margin-top: 2vh;
+  }
+  .login h2 {
+    font-size: 2.5vh;
+  }
+  .login h3 {
+    font-size: 1.7vh;
+    margin-bottom: 4vh;
+  }
+  .login :is(input, button) {
+    font-size: 1.7vh;
+    height: 4vh;
+    border-radius: 2vh;
+    padding: 0 1vw;
+  }
+  .imagen_versum {
+    display: none;
+  }
+  .toggle-password {
+    font-size: 2vh;
+    right: 1vw;
+  }
+}

@@ -1,0 +1,101 @@
+/* ===== HERO ===== */
+.hero {
+  min-height: 70vh; /* ✅ ocupa toda la pantalla */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(180deg, #ede6ff 0%, #fefeff 100%); /* tonos violeta muy suaves */
+  position: relative;
+  padding: 8rem 2rem 6rem;
+  text-align: center;
+  color: #1a1a1a;
+  margin-top: 0;
+  overflow: hidden;
+}
+
+/* cuadrícula sutil del fondo */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: linear-gradient(transparent 95%, rgba(0,0,0,0.02) 95%),
+                    linear-gradient(90deg, transparent 95%, rgba(0,0,0,0.02) 95%);
+  background-size: 40px 40px;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: auto;
+}
+
+.hero h1 {
+  font-size: 8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero h1 span {
+  color: #8763e8; /* violeta destacado */
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #444;
+}
+
+/* ===== BOTÓN HERO ===== */
+.hero-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 30px;
+  background-color: #8a63e8; /* violeta base */
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #704ed9; /* violeta más oscuro */
+  box-shadow: 0 6px 15px rgba(135, 99, 232, 0.4);
+}
+
+.hero-btn:visited,
+.hero-btn:active {
+  color: white;
+}
+
+/* ===== SCROLL SUAVE ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 5rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 3.5rem;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+  }
+}

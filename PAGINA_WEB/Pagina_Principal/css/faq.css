@@ -1,0 +1,99 @@
+body {
+  background: linear-gradient(135deg, #e6e0f8 0%, #f2ebff 100%);
+}
+
+/* === FAQ HEADER & LIST === */
+.faq-header {
+  background: #f4efff; /* violeta muy claro */
+  padding: 3rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #4b2cbf; /* violeta oscuro */
+  margin: 30px auto 10px auto;
+}
+
+.faq h2 {
+  text-align: center;
+  font-family: 'Roboto', sans-serif; /* tipografía Roboto */
+  font-weight: 700; /* más destacado */
+  font-size: 3rem; /* tamaño del título */
+  color: #4b0082; /* violeta oscuro */
+  margin-bottom: 1rem;
+}
+
+.faq p.intro {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 700px; /* evita que el párrafo sea demasiado ancho */
+}
+
+.faq-subtitle {
+  color: #6d52c1; /* violeta medio */
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.faq-list {
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: #f3eaff; /* violeta muy suave */
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(75, 44, 191, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item.active {
+  box-shadow: 0 4px 12px rgba(75, 44, 191, 0.2);
+}
+
+.faq-question {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 1.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #4b2cbf; /* violeta */
+}
+
+.faq-question:hover {
+  background: rgba(75, 44, 191, 0.08);
+  border-radius: 10px;
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  color: #7f5ce3; /* violeta más suave */
+  transition: transform 0.2s;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1.5rem;
+  color: #6d52c1; /* violeta medio */
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 500px;
+  padding: 1rem 1.5rem;
+}

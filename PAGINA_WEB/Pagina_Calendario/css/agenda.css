@@ -1,0 +1,143 @@
+.container{
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 100%;
+  height: 85vh; 
+  background: #dbdbdb;
+  padding: 15px;
+  border-radius: 30px;
+  box-sizing: border-box;
+  overflow: hidden; 
+  box-shadow:  -20px 20px 60px #a0a0a0,
+  20px 20px 60px #a0a0a0;
+  margin: 20px;
+}
+
+#columna-izquierda {
+  display: flex;
+  flex-direction: column; 
+  flex: 0 0 380px; 
+  justify-content: center ;
+  gap: 10px;
+  align-items: left;
+  width: 350px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 22px;
+  text-align: left; 
+  box-sizing: border-box;
+  overflow-y: auto; 
+  max-height: 100%; 
+}
+
+#columna-derecha {
+  flex: 1;
+  display: flex;
+  justify-content: center; 
+  align-items: stretch;
+  gap: 20px;
+  max-height: 100%
+}
+
+/* Panel izquierdo */
+.config-panel, #turnos-info {
+  flex: 2;
+  width: 350px;
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 30px;
+}
+
+.config-panel h3 {
+  margin-bottom: 15px;
+  font-size: 22px;
+  color: #4b0082;
+  font-weight: bold;
+}
+
+.config-panel label {
+  font-weight: bold;
+  display: block;
+  margin: 10px 0 5px;
+  color: #444444;
+}
+
+
+/* Chips de días */
+#dias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+#dias button {
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#dias button:hover {
+  background: #eee;
+}
+
+#dias button.data-dia {
+  background: #8763e8 !important;
+  color: white;
+  border-color: #4b0082;
+}
+
+/* Selects y inputs */
+.config-panel input,
+.config-panel select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 3px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Botón aplicar */
+.botones{
+  margin-top: 15px ;
+  width: 100%;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  background: #4b0082;
+  color:#f9f9f9;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.botones:hover {
+  background: #8763e8;
+}
+.botones:active {
+  background: #8763e8;
+}
+
+/* Calendario */
+.columna-derecha #calendar {
+  flex: 1 1 0;
+  max-width: 60vw;
+  min-width: 300px;
+  margin: 2vh auto;
+  min-height: 0;
+  padding: 2vh;
+  width: 100%;
+  height: 90%;
+  background: white;
+  padding: 15px;
+  border-radius: 30px;
+  box-sizing: border-box;
+  overflow-y: auto;  /* ✅ Scroll interno solo aquí */
+  max-height: 100%;  /* no crece más que el contenedor */
+}

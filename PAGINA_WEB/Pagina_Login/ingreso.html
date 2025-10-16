@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>INGRESO</title>
+  <link rel="stylesheet" href="css/ingreso.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Enlace al JS externo -->
+  <script src="js/ingreso.js" defer></script>
+</head>
+
+<header>
+  <button id="btn-Cerrar-Sesion">Inicio</button>
+</header>
+
+<body>
+  <div class="login">
+    <img src="assets/versum.png" class="imagen_versum" />
+    <h2>Iniciar Sesión</h2>
+    <h3>Utilice su Email y contraseña para loguearse!</h3>
+
+    <!-- Formulario de login -->
+    <form class="form" id="loginForm">
+      <div class="textbox">
+        <input required type="text" id="email" name="email" />
+        <label>Email</label>
+      </div>
+
+      <div class="textbox">
+        <input required type="password" id="password" name="password" />
+        <label>Contraseña</label>
+
+        <button type="button" class="toggle-password" tabindex="-1" aria-label="Mostrar/Ocultar contraseña" style="background: transparent; border: none; box-shadow: none;">
+          <span id="eye-icon">
+            <!-- Ojo abierto SVG -->
+            <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24">
+              <path stroke="#20323a" stroke-width="2" fill="none" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/>
+              <circle cx="12" cy="12" r="3" stroke="#20323a" stroke-width="2" fill="none"/>
+            </svg>
+
+            <!-- Ojo cerrado SVG -->
+            <svg id="eye-closed" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" style="display:none">
+              <path stroke="#20323a" stroke-width="2" fill="none" d="M3 3l18 18M1 12s4-7 11-7c2.21 0 4.21.5 6 1.36M23 12s-4 7-11 7c-2.21 0-4.21-.5-6-1.36"/>
+              <path stroke="#20323a" stroke-width="2" fill="none" d="M9.88 9.88A3 3 0 0 0 12 15a3 3 0 0 0 2.12-.88"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <button type="submit">Ingresar</button>
+    </form>
+
+    <p class="footer">2025 Versum. Todos los derechos reservados.</p>
+  </div>
+</body>
+</html>

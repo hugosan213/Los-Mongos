@@ -1,0 +1,201 @@
+/* === BODY / BACKGROUND === */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: linear-gradient(180deg, #f0e5ff 0%, #e3d2ff 100%);
+}
+
+/* Sección contacto */
+#contacto {
+    background: #ffffff;
+    padding: 3rem 2rem;
+    border-radius: 16px;
+    margin: 4rem auto;
+    max-width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    border: 1px solid rgba(138,99,232,0.2);
+}
+
+/* Header */
+#contacto .header h1 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #4b0082;
+    margin: 0 auto 10px auto;
+    text-align: center;
+}
+
+#contacto .contacto-subtitle {
+    color: #555;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+/* Columnas internas */
+#contacto .contacto-contact-block {
+    background: #ffffff;
+    padding: 3rem 2rem;
+    border-radius: 16px;
+    margin: 2rem auto 0 auto;
+    max-width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    border: 1px solid rgba(138,99,232,0.2);
+}
+
+#contacto .contacto-contact-block .col-md-6 {
+    flex: 1 1 300px;
+    max-width: 100%;
+}
+
+/* Titulos y textos */
+#contacto .contacto-contact-block h2 {
+    font-size: 1.6rem;
+    color: #4b0082;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#contacto .contacto-contact-block p {
+    color: #555;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Links y botones */
+#contacto .contacto-contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+#contacto .contacto-contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 60px;
+    background: #8a63e8;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s, box-shadow 0.3s;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#contacto .contacto-contact-btn:hover {
+    background: #704ed9;
+    box-shadow: 0 6px 15px rgba(138, 99, 232, 0.4);
+}
+
+#contacto .contacto-contact-btn.whatsapp {
+    background: #a377ff;
+}
+
+#contacto .contacto-contact-btn.whatsapp:hover {
+    background: #8c5ce6;
+}
+
+#contacto .contacto-contact-btn img {
+    height: 20px;
+    width: 20px;
+}
+
+/* Formularios */
+#contacto form input,
+#contacto form textarea {
+    width: 100%;
+    padding: 12px 10px;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+#contacto form button {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 20px;
+    border-radius: 6px;
+    border: none;
+    background: #8a63e8;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Centrar verticalmente la columna de info */
+#contacto .info-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* === ADAPTACIÓN MÓVIL === */
+@media (max-width: 768px) {
+    #contacto {
+        padding: 2rem 1rem;
+        margin: 2rem 1rem;
+    }
+
+    #contacto .contacto-contact-block {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 2rem 1rem;
+    }
+
+    #contacto .contacto-contact-block .col-md-6 {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    #contacto .contacto-contact-links a.contacto-contact-btn {
+        width: 100%;
+    }
+
+    #contacto form input,
+    #contacto form textarea,
+    #contacto form button {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #contacto .contacto-contact-block h2 {
+        font-size: 1.4rem;
+    }
+
+    #contacto .contacto-contact-block p {
+        font-size: 0.95rem;
+    }
+
+    #contacto .contacto-contact-btn {
+        font-size: 0.95rem;
+        padding: 10px 16px;
+    }
+
+    #contacto form input,
+    #contacto form textarea,
+    #contacto form button {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+    }
+}

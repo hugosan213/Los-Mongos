@@ -1,0 +1,271 @@
+/* ================== Estilos Generales ================== */
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #dbdbdb !important;
+  background-size: cover;
+}
+/* ================= Navbar ================= */
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #4b0082;
+    padding: 0 20px;
+    position: relative;
+    height: 50px; /* Altura fija para que las pestañas se acomoden bien */
+    box-sizing: border-box;
+}
+
+.nav-left {
+    display: flex;
+    align-items: flex-end; /* Alinea las pestañas abajo */
+}
+
+.nav-left a {
+    margin-right: 20px;
+    color: #dbdbdb !important;
+    font-weight: bold;
+    padding: 10px 16px;
+    text-decoration: none !important;
+    border-radius: 12px 12px 0 0;    /* redondeo superior */
+    position: relative;
+    top: 0;
+    display: inline-block;
+}
+
+.nav-left a:hover {
+  color: #8763e8 !important;
+
+}
+
+.nav-left a.active {
+    background: #dbdbdb;
+    color: #8763e8 !important;
+    top: 4px; /* se levanta sobre la barra */
+    border: 3px solid #dbdbdb;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    position: relative;
+    z-index: 2;
+    pointer-events: none; /* no clickeable */
+}
+
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#nombre-usuario {
+    color: #f5f5f5;
+    font-weight: bold;
+    font-size: 2vh;
+}
+
+/* Botón cerrar sesión */
+#cerrar-sesion {
+    background-color: #4b0082;
+    color: #f5f5f5;
+    font-weight: bold;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.8vh;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#cerrar-sesion:hover {
+    background-color: #8763e8;
+
+}
+
+/* ================= Responsive ================= */
+@media screen and (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+    }
+
+    .usuario-sesion {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+/* Animación fade */
+#contenido {
+  opacity: 0;
+  transition: opacity 0.3s;
+  padding: 20px;
+}
+
+#contenido.visible {
+  opacity: 1;
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #dbdbdb !important;
+  background-size: cover;
+  background-position: center;
+  box-shadow:  -20px 20px 60px #a0a0a0,
+  20px 20px 60px #a0a0a0;
+  border-radius: 30px;
+  padding: 15px;
+  gap: 5vw;
+  width: 90%;
+  height: 100%;
+  overflow: hidden;
+  margin: 20px 80px;
+}
+
+#calendar {
+  max-width: 45vw;
+  min-width: 30vw;
+  background: #f5f5f5 !important;
+  min-height: 0;
+  padding: 2vh;
+  width: 100%;
+  border-radius: 30px;
+  
+}
+
+#calendar a {
+  color: #202124 !important;
+  text-decoration: none !important;
+}
+
+#turnos-proximos {
+  flex: 1 1 0;
+  max-width: 45vw;
+  min-width: 20vw;
+  font-size: 2vh;
+  margin: 2vh 0;
+  padding: 2vh;
+  border-radius: 30px;
+  background: #f5f5f5;
+  width: 100%;
+}
+
+#turnos-proximos h3{
+  margin-top: 0;
+  font-size: 3.5vh;
+  color: #8763e8;
+  font-weight: bold;
+}
+
+h3 {
+    color: #8763e8;
+    font-weight: bold;
+    margin-top: 0;
+    font-size: 2.5vh;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+nav li{
+  margin-right: 20px;
+  border-bottom: none !important;
+}
+
+li {
+    padding: 1.5vh;
+    border-bottom: 0.2vh solid #4b0082;
+    font-size: 2vh;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+/* ================== FullCalendar ================== */
+
+/* Cabecera de los días */
+.fc-col-header-cell {
+  background-color: #f5f5f5;
+  color: #4b0082;
+  font-weight: 500;
+  font-size: 2vh;
+  border-bottom: 1px solid #dadce0;
+}
+
+/* Números de los días */
+.fc-daygrid-day-number {
+  color: #202124;
+  font-weight: bold;
+  font-size: 1.7vh;
+  padding: 0.3vh 0.6vw;
+}
+
+/* Día actual */
+.fc-day-today {
+  background-color: #ddd8d4 !important;
+  border-radius: 6px;
+}
+
+/* Eventos */
+.fc-event {
+  font-size: 1.8vh;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 0.5vh 1vw;
+  text-align: center;
+  box-shadow: 0.2vh 0.2vh 0.5vh #174e4f(0,0,0,0.2);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.fc-event:hover {
+  transform: scale(1);
+  cursor: pointer;
+  border: 1px solid #000000;
+}
+
+.fc-event.evento-seleccionado {
+  border: 3px solid #838383 !important;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+/* Celdas del calendario (día) */
+.fc-daygrid-day {
+  border: 1px solid #e0e0e0;
+}
+
+/* Separador entre filas */
+.fc-daygrid-body {
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Vista semanal / diaria */
+.fc-timegrid-slot {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.fc-timegrid-axis {
+  color: #5f6368;
+  font-size: 1.5vh;
+}
+
+/* Encabezado de toolbar (mes, semana, día) */
+.fc-toolbar-title {
+  font-size: 2.5vh;
+  font-weight: bold;
+  color: #4b0082;
+}
+
+

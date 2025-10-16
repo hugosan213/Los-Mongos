@@ -1,0 +1,31 @@
+<div class="contenedor">
+    <div id="col-izquierda">
+        <section id="tarjeta-busqueda">
+            <h1>Reservar Turno</h1>
+            <input type="text" id="input-dni" placeholder="DNI (sin puntos)">
+            <button id="btn-buscar-cliente" class="botones">Buscar</button>       
+        </section>
+
+        <section id="resultado-cliente">
+                    <!-- Aquí se mostrarán los datos del cliente si se encuentra -->
+                <div id="datos-cliente">
+                    <p><strong>Nombre:</strong> <span id="nombre-cliente"></span></p>
+                    <p><strong>Apellido:</strong> <span id="apellido-cliente"></span></p>
+                    <p><strong>DNI:</strong> <span id="dni-cliente"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="telefono-cliente"></span></p>
+                </div>
+
+                <label>Fecha:</label>
+                <input type="date" id="fechaTurno">
+
+                Horario:<select id="horaTurno"></select>
+
+                <button id="btnAgendar" class="botones">Reservar Turno</button>
+        </section>
+    </div>
+    <div id="col-derecha">
+        <section id="calendar"></section>
+</div>
+
+<div id="popoverTurno" class="popover-turno"></div>
+

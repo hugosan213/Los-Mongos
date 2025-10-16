@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "name": "los-mongos-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Root package.json to enable ESM loader for unified server",
+  "scripts": {
+    "start": "node PAGINA_WEB/server.js"
+  }
+}

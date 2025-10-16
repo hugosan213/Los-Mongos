@@ -1,0 +1,17 @@
+{
+  "name": "chatbot-copia",
+  "version": "1.0.0",
+  "main": "inicio.js",
+  "scripts": {
+    "start": "node inicio.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc.3",
+    "axios": "^1.6.0",
+    "baileys": "^7.0.0-rc.3",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.9.7",
+    "pm2": "^6.0.13",
+    "qrcode-terminal": "^0.12.0"
+  }
+}

@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Turnos</title>
+    <meta name="theme-color" content="#fe7f2d">
+    <meta name="msapplication-navbutton-color" content="#fe7f2d"> <!-- Para Android/Edge -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#fe7f2d"> <!-- iOS -->
+    <link rel="stylesheet" href="css/home.css"/>
+    <link rel="stylesheet" href="css/contenido_home.css"/>  
+    <link rel="stylesheet" href="css/turnos.css"/>
+    <link rel="stylesheet" href="css/agenda.css"/>
+    <link rel="stylesheet" href="css/contacto_home.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<body>
+<nav class="nav-container">
+    <div class="nav-left">
+        <a href="" data-page="html/contenido_home.html">Home</a>
+        <a href="" data-page="html/calendario.html"> Calendario</a>
+        <a href="" data-page="html/turnos.html">Reservar</a>
+        <a href="" data-page="html/agenda.html">Mi Agenda</a>
+        <a href="" data-page="html/contacto_home.html">Soporte</a>
+    </div>
+    <div class="nav-right">
+        <span id="nombre-usuario">Usuario</span>
+        <button id="cerrar-sesion">Cerrar Sesión</button>
+    </div>
+</nav>
+
+<!-- Contenedor dinámico -->
+<main id="contenido" class="fade"></main>
+
+
+
+<!-- FullCalendar y Bootstrap scripts -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+
+<!-- Script principal -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // ==============================
+  // VALIDAR SESIÓN
+  // ==============================
+    if (!sessionStorage.getItem("usuario")) {
+    alert("Debes iniciar sesión para ver esta página.");
+    window.location.href = "../Pagina_Principal/index.html";
+    return;
+    }
+
+    // ==============================
+    // NOMBRE USUARIO
+    // ==============================
+    const nombreUsuario = sessionStorage.getItem("usuario");
+    document.getElementById("nombre-usuario").textContent = nombreUsuario ? nombreUsuario : "Usuario";
+    const idUsuario = sessionStorage.getItem("idUsuario");
+    
+    // ==============================
+    // CLIMA
+    /* ==============================
+    const URL = "https://api.open-meteo.com/v1/forecast?latitude=-42.91&longitude=-71.31&current_weather=true";
+
+    async function getWeather() {
+    try {
+        const res = await fetch(URL);
+        const data = await res.json();
+        const weather = data.current_weather;
+
+        // Mapear código de clima a descripción
+        const weatherCodes = {
+        0: "Despejado ☀️",
+        1: "Mayormente despejado 🌤️",
+        2: "Parcialmente nublado ⛅",
+        3: "Nublado ☁️",
+        45: "Niebla 🌫️",
+        48: "Niebla con escarcha 🌫️❄️",
+        51: "Llovizna ligera 🌦️",
+        53: "Llovizna moderada 🌧️",
+        55: "Llovizna intensa 🌧️",
+        61: "Lluvia ligera 🌧️",
+        63: "Lluvia moderada 🌧️",
+        65: "Lluvia fuerte 🌧️",
+        71: "Nieve ligera ❄️",
+        73: "Nieve moderada ❄️",
+        75: "Nieve intensa ❄️",
+        95: "Tormenta eléctrica ⛈️"
+        };
+
+        const card = document.getElementById("clima");
+        card.innerHTML = `
+        <h2>Esquel</h2>
+        <div class="temp">${weather.temperature}°C</div>
+        <div class="desc">${weatherCodes[weather.weathercode] || "Clima desconocido"}</div>
+        <div class="viento">Viento: ${weather.windspeed} km/h</div>
+        `;
+    } catch (error) {
+        console.error("Error al obtener el clima:", error);
+        document.getElementById("weather").innerHTML = "<p>No se pudo cargar el clima 🌪️</p>";
+        }
+    }
+
+    getWeather();*/
+    // ==============================
+    // TRANSICIONES PÁGINA + NAV ACTIVO
+    // ==============================
+    const contenedor = document.getElementById("contenido");
+
+    async function cargarPagina(pagina) {
+        try {
+            contenedor.classList.remove("visible");
+            const resp = await fetch(pagina);
+            const html = await resp.text();
+
+            setTimeout(() => {
+                contenedor.innerHTML = html;
+                contenedor.classList.add("visible");
+
+                // ✅ Marcar la pestaña activa por data-page
+                document.querySelectorAll('.nav-left a').forEach(link => {
+                    const linkPage = link.getAttribute('data-page');
+                    link.classList.toggle('active', linkPage === pagina);
+                });
+
+                // Inicializaciones específicas por página
+                if (pagina === "html/contenido_home.html") cargarProximosTurnos();
+                if (pagina === "html/calendario.html") inicializarCalendario();
+                if (pagina === "html/agenda.html") inicializarAgenda();
+                if (pagina === "html/turnos.html") inicializarTurno();
+                if (pagina === "html/contacto_home.html") {}
+            }, 300);
+        } catch (err) {
+            contenedor.innerHTML = "<p>Error cargando página</p>";
+            console.error(err);
+        }
+    }
+
+    // 📄 Cargar página inicial
+    cargarPagina("html/contenido_home.html");
+
+    // 🧭 Manejo de navegación
+    document.querySelectorAll("nav a[data-page]").forEach(link => {
+        link.addEventListener("click", e => {
+            e.preventDefault();
+            const pagina = link.getAttribute("data-page");
+            cargarPagina(pagina);
+        });
+    });
+
+
+    //========================
+    // 📅 Cargar turnos + nota
+    //========================
+    function cargarProximosTurnos() {
+        const hoy = new Date().toISOString().substring(0, 10);
+        cargarTurnosDeFecha(hoy);
+        cargarNotaGeneral();
+    }
+
+    function cargarTurnosDeFecha(fecha) {
+        fetch(`http://127.0.0.1:3000/api/turnos/por-fecha?fecha=${fecha}`, {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => {
+            // =======================
+            // 🟠 1️⃣ TARJETA TURNOS
+            // =======================
+            const lista = document.getElementById("lista-turnos");
+            if (!lista) return;
+            lista.innerHTML = "";
+
+            if (!Array.isArray(data) || data.length === 0) {
+                lista.innerHTML = `<li>No hay turnos para ${fecha}</li>`;
+                return;
+            }
+
+            const tituloFecha = document.createElement("h4");
+            tituloFecha.textContent = `${fecha}`;
+            tituloFecha.style.marginBottom = "1vh";
+            lista.appendChild(tituloFecha);
+
+            const ul = document.createElement("ul");
+            data.forEach(t => {
+                const li = document.createElement("li");
+                const horaFormateada = t.hora?.substring(0, 5);
+                li.textContent = `Hora: ${horaFormateada} - Cliente: ${t.cliente} - Sede: ${t.sede}`;
+                ul.appendChild(li);
+            });
+            lista.appendChild(ul);
+        })
+        .catch(err => console.error("Error cargando turnos del día:", err));
+    }
+
+    //========================
+    // 📝 Nota general persistente
+    //========================
+    function cargarNotaGeneral() {
+        const contenedor = document.getElementById("check-atencion");
+        if (!contenedor) return;
+
+        contenedor.innerHTML = `
+            <h2>Notas Generales del Día</h2>
+            <textarea id="nota-general" rows="20" placeholder="Escribí aquí tus observaciones generales..."></textarea>
+            <button id="guardar-notas">Guardar Notas</button>
+        `;
+
+        const textarea = contenedor.querySelector("#nota-general");
+
+        // Cargar nota guardada si existe
+        const notaGuardada = localStorage.getItem("nota_general_turnos") || "";
+        textarea.value = notaGuardada;
+
+        // Guardar cambios en localStorage automáticamente
+        textarea.addEventListener("input", () => {
+            localStorage.setItem("nota_general_turnos", textarea.value);
+        });
+
+        // Asociar evento al botón después de que se haya creado
+        document.getElementById("guardar-notas").addEventListener("click", () => {
+            const nota = textarea.value;
+            if (!nota) {
+                alert("No hay contenido para guardar.");
+                return;
+            }
+
+            try {
+                const a = document.createElement("a");
+                a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(nota);
+                a.download = "Notas_Generales.txt";
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                // Mostrar cuadro de diálogo de confirmación
+                alert("El archivo TXT se guardó correctamente.");
+            } catch (error) {
+                console.error("Error al guardar el archivo:", error);
+                alert("Hubo un error al guardar el archivo.");
+            }
+        });
+    }
+
+    // ==============================
+    // FUNCION INICIALIZAR CALENDARIO
+    // ==============================
+    function inicializarCalendario() {
+        fetch("http://127.0.0.1:3000/api/turnos/proximos", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then((data) => {
+            const turnosPorFecha = {};
+            data.forEach(t => {
+            let fecha = t.fecha?.substring(0, 10);
+            if (!turnosPorFecha[fecha]) turnosPorFecha[fecha] = 0;
+            turnosPorFecha[fecha]++;
+            });
+
+            const eventos = Object.entries(turnosPorFecha).map(([fecha, cantidad], index) => ({
+                title: `${cantidad} turno${cantidad > 1 ? 's' : ''}`,
+                start: fecha,
+                backgroundColor: ["#E53935", "#FB8c00", "#FFEB3B", "#43A047", "#1E88E5", "#8E24AA", "#E53935"][index % 7],
+                borderColor: "transparent",
+                textColor: "white"
+            }));
+
+            const calendarEl = document.getElementById("calendar");
+            if (!calendarEl) {
+            console.error("No se encontró el contenedor #calendar en la página cargada");
+            return;
+            }
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: "dayGridMonth",
+                locale: "es",
+                events: eventos,
+                buttonText: { week: "Semana", today: "Hoy" },
+                eventClick: function(info) {
+                    const fechaSeleccionada = info.event.startStr.substring(0,10);
+                    document.querySelectorAll('.fc-event').forEach(ev => ev.classList.remove('evento-seleccionado'));
+                    info.el.classList.add('evento-seleccionado');
+                    cargarTurnosDeFecha(fechaSeleccionada);
+                },
+            });
+            calendar.render();
+        })
+        .catch(err => console.error("Error cargando eventos calendario:", err));
+
+    // ==============================
+    // CARGAR TURNOS DEL DÍA ACTUAL
+    // ==============================
+    const hoy = new Date().toISOString().substring(0, 10);
+        cargarTurnosDeFecha(hoy);
+
+        function cargarTurnosDeFecha(fechaSeleccionada) {
+            fetch(`http://127.0.0.1:3000/api/turnos/por-fecha?fecha=${fechaSeleccionada}`, {
+            method: "GET",
+            credentials: "include"
+            })
+            .then(res => res.json())
+            .then(data => {
+            const lista = document.getElementById("lista-turnos");
+            if (!lista) return;
+            lista.innerHTML = "";
+
+            if (!Array.isArray(data) || data.length === 0) {
+                lista.innerHTML = `<li>No hay turnos para ${fechaSeleccionada}</li>`;
+                return;
+            }
+
+            const tituloFecha = document.createElement("h4");
+            tituloFecha.textContent = `${fechaSeleccionada}`;
+            tituloFecha.style.marginBottom = "1vh";
+            lista.appendChild(tituloFecha);
+
+            const ul = document.createElement("ul");
+            data.forEach(t => {
+                const li = document.createElement("li");
+                let horaFormateada = t.hora?.substring(0, 5);
+                li.textContent = `Horario: ${horaFormateada} | Turno: ${t.cliente} | Sede: ${t.sede}`;
+                ul.appendChild(li);
+            });
+            lista.appendChild(ul);
+            })
+            .catch(err => console.error("Error cargando turnos del día:", err));
+            }
+        }
+
+    // ==============================
+    // FUNCION INICIALIZAR AGENDA
+    // ==============================
+    function inicializarAgenda() {
+        const calendarEl = document.getElementById('calendar');
+        if (!calendarEl) {
+            console.error("❌ No se encontró el contenedor #calendar en la página de agenda");
+            return;
+        }
+
+        // Instancia global para poder acceder desde otras funciones
+        window.calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'es',
+            timeZone: 'local',
+            headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            buttonText: { month: "Mes", week: "Semana", today: "Hoy", day: "Día" },
+            height: 'auto',
+            eventClick: function(info) {
+                const turnoDetalle = document.getElementById("turno-detalle");
+                const eliminarTurno = document.getElementById("eliminar-turno");
+
+                if (!turnoDetalle) {
+                    console.error("No se encontró el contenedor #turno-detalle");
+                    return;
+                }
+
+                // Mostrar información del evento
+                turnoDetalle.innerHTML = `
+                    <p><strong>Inicio:</strong> ${info.event.start.toLocaleString()}</p>
+                    <p><strong>Fin:</strong> ${info.event.end ? info.event.end.toLocaleString() : "No especificado"}</p>
+                `;
+
+                // Mostrar botón de eliminar
+                eliminarTurno.style.display = "block";
+            }
+        });
+
+        calendar.render();
+
+        // 👉 Cargar la agenda guardada
+        cargarAgendaExistente();
+
+        // ==============================
+        // FUNCION CARGAR AGENDA EXISTENTE
+        // ==============================
+        function cargarAgendaExistente() {
+            fetch('http://127.0.0.1:3000/api/turnos/agenda', { credentials: 'include' })
+                .then(res => res.json())
+                .then(data => {
+
+                    if (!data.success) {
+                        console.error("❌ Error al obtener agenda:", data.error);
+                        return;
+                    }
+                    if (!Array.isArray(data.agenda) || data.agenda.length === 0) {
+                        console.warn("⚠️ Agenda vacía o en formato inesperado");
+                        return;
+                    }
+
+                    data.agenda.forEach(item => {
+
+                        const inicio = parseLocalDate(item.fecha_inicio);
+                        const fin = parseLocalDate(item.fecha_fin);
+
+                        if (!inicio || !fin) {
+                            console.warn("⛔ Fechas inválidas, se omite");
+                            console.groupEnd();
+                            return;
+                        }
+
+                        for (let d = new Date(inicio.getTime()); d <= fin; d.setDate(d.getDate() + 1)) {
+                            const diaActual = d.getDay();
+                            const diaAgenda = Number(item.dia_semana);
+
+
+                            if (diaActual === diaAgenda) {
+                                const fechaStr = formatLocalDate(d);
+
+                                window.calendar.addEvent({
+                                    title: `Guardado ${item.hora_inicio} - ${item.hora_fin} (${item.horario_turno})`,
+                                    start: `${fechaStr}T${item.hora_inicio}`,
+                                    end: `${fechaStr}T${item.hora_fin}`,
+                                    backgroundColor: '#8763e8',
+                                    borderColor: '#4b0082',
+                                    editable: false
+                                });
+                            }
+                        }
+
+                    console.groupEnd();
+                });
+            })
+            .catch(err => {
+                console.error("⚠️ Error en cargarAgendaExistente:", err);
+            });
+    }
+
+        // ==========================
+        // Utilidades para manejar fechas
+        // ==========================
+        function parseLocalDate(fechaIso) {
+            const d = new Date(fechaIso);
+            if (isNaN(d.getTime())) {
+                console.warn("⛔ parseLocalDate: fecha inválida recibida:", fechaIso);
+                return null;
+            }
+            return new Date(d.getFullYear(), d.getMonth(), d.getDate()); // normaliza a medianoche local
+        }
+
+        function formatLocalDate(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+
+        // Generar select de horas dinámicamente
+        function generarHoras(selectId, desde=0, hasta=23) {
+            const select = document.getElementById(selectId);
+            for (let h = desde; h <= hasta; h++) {
+                const hora = h.toString().padStart(2, '0') + ":00";
+                const opt = document.createElement("option");
+                opt.value = hora;
+                opt.textContent = hora;
+                select.appendChild(opt);
+            }
+        }
+        generarHoras("horaInicio", 6, 22); // ejemplo: de 06:00 a 22:00
+        generarHoras("horaFin", 7, 23);    // ejemplo: de 07:00 a 23:00
+
+        function generarHorarios(selectId, tiempos) {
+            const select = document.getElementById(selectId);
+            tiempos.forEach(t => {
+                const opt = document.createElement("option");
+                opt.value = t; // en minutos
+                opt.textContent = formatearTiempo(t);
+                select.appendChild(opt);
+            });
+        }
+
+        function formatearTiempo(minutos) {
+            if (minutos < 60) {
+                return `${minutos} minutos`;
+            }
+            const horas = Math.floor(minutos / 60);
+            const mins = minutos % 60;
+            return `${horas} hora${horas > 1 ? 's' : ''}${mins > 0 ? ` ${mins} min` : ''}`;
+        }
+
+        generarHorarios("atencion", [15, 20, 30, 40, 60, 90, 120, 180, 240]);
+
+        // Selección de días (chips)
+        const diasSeleccionados = new Set();
+        document.querySelectorAll('#dias button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const dia = String(Number(btn.getAttribute('data-dia'))); // 0=Dom, 1=Lun...
+                if (diasSeleccionados.has(dia)) {
+                    diasSeleccionados.delete(dia);
+                    btn.style.background = '';
+                } else {
+                    diasSeleccionados.add(dia);
+                    btn.style.background = '#8763e8';
+                }
+            });
+        });
+
+        // Aplicar al calendario
+        document.getElementById("aplicar").addEventListener('click', () => {
+            const inicio = parseLocalDate(document.getElementById('fechaInicio').value);
+            const fin = parseLocalDate(document.getElementById('fechaFin').value);
+            const horaInicio = document.getElementById('horaInicio').value;
+            const horaFin = document.getElementById('horaFin').value;
+            const atencion = parseFloat(document.getElementById('atencion').value); // horas por turno
+
+            // limpiar eventos anteriores
+            calendar.removeAllEvents();
+
+            for (let d = new Date(inicio); d <= fin; d.setDate(d.getDate() + 1)) {
+                if (diasSeleccionados.has(String(d.getDay()))) {
+                    const fechaStr = formatLocalDate(d);
+
+                    // ✅ Agregamos eventos con fecha local, sin usar toISOString()
+                    calendar.addEvent({
+                        title: `Trabajo ${horaInicio}-${horaFin}`,
+                        start: `${fechaStr}T${horaInicio}`,
+                        end: `${fechaStr}T${horaFin}`,
+                        horarioStr: `${fechaStr}T${atencion}`, // para enviar al backend
+                        allDay: false
+                    });
+                }
+            }
+        });
+        
+        // =======================
+        // Botón Guardar
+        // =======================
+        document.getElementById("guardar").addEventListener('click', () => {
+        const eventos = calendar.getEvents();
+        if (eventos.length === 0) {
+            alert("No hay turnos para guardar.");
+            return;
+        }
+
+        function minutosAHHMMSS(minutos) {
+            const h = Math.floor(minutos / 60).toString().padStart(2, '0');
+            const m = (minutos % 60).toString().padStart(2, '0');
+            return `${h}:${m}:00`;
+        }
+
+        const inicio = parseLocalDate(document.getElementById('fechaInicio').value);
+        const fin = parseLocalDate(document.getElementById('fechaFin').value);
+        const duracionTurno = parseFloat(document.getElementById('atencion').value);
+        const horarioTurno = minutosAHHMMSS(duracionTurno);
+
+        // Preparamos los datos
+        const turnosProvisorio = eventos.map(ev => {
+            const fechaInicio = ev.start; // Date object
+            const fechaFin = ev.end;      // Date object
+            return {
+                fechaInicio: formatLocalDate(inicio),
+                fechaFin: formatLocalDate(fin),
+                horaInicio: ev.startStr.split('T')[1],
+                horaFin: ev.endStr.split('T')[1],
+                horario: horarioTurno,
+                diaSemana: fechaInicio.getDay() // 0=Dom, 1=Lun…
+            };
+        });
+
+        const turnos = turnosProvisorio.filter((t, index, self) =>
+            index === self.findIndex(o => o.diaSemana === t.diaSemana)
+        );
+        console.log("Turnos a enviar:", turnos);
+
+        // Envío al backend
+        fetch('http://127.0.0.1:3000/api/turnos/guardar-agenda', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ turnos })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert("Agenda guardada correctamente.");
+            } else {
+                alert("Error al guardar: " + (data.error || "desconocido"));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error en la conexión con el servidor.");
+        });
+    });
+        }
+
+    // ==============================
+    // FUNCION INICIALIZAR TURNO
+    // ==============================
+    function inicializarTurno() {
+        fetch("http://127.0.0.1:3000/api/turnos/proximos", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then((data) => {
+
+            function obtenerStartISO(t) {
+                let datePart = "";
+                let timePart = "";
+
+                if (t.hora) {
+                    timePart = t.hora.substring(0,5);
+                }
+
+                if (t.fecha) {
+                    if (t.fecha.includes('T')) {
+                        const [d, tm] = t.fecha.split('T');
+                        datePart = d.substring(0,10);
+                        if (!timePart && tm) timePart = tm.substring(0,5);
+                    } else {
+                        datePart = t.fecha.substring(0,10);
+                    }
+                } else {
+                    datePart = new Date().toISOString().substring(0,10);
+                }
+
+                return timePart ? `${datePart}T${timePart}` : `${datePart}`;
+            }
+
+            const eventos = data.map((t, index) => {
+                const startISO = obtenerStartISO(t);
+                return {
+                    title: t.Cliente || t.title || t.cliente || "Turno",
+                    start: startISO,
+                    allDay: false,
+                    extendedProps: {
+                        cliente: t.cliente,
+                        dni: t.dni,
+                        telefono: t.telefono,
+                        rawHora: t.hora
+                    },
+                    backgroundColor: ["#E53935", "#FDD835", "#FFEB3B", "#43A047", "#1E88E5", "#8E24AA", "#E53935"][index % 7],
+                    borderColor: "transparent",
+                    textColor: "white"
+                };
+            });
+
+            const calendarEl = document.getElementById("calendar");
+            if (!calendarEl) {
+                console.error("No se encontró el contenedor #calendar en la página cargada");
+                return;
+            }
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: "timeGridWeek",
+                locale: "es",
+                events: eventos,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                buttonText: { month: "Mes", week: "Semana", today: "Hoy", day: "Día" },
+                eventClick: function(info) {
+                    const popover = document.getElementById("popoverTurno");
+
+                    // 📌 Datos del turno (vienen del back vía extendedProps)
+                    const clienteFull = info.event.extendedProps?.cliente || info.event.title || "";
+                    const [nombre, ...apellidoArr] = clienteFull.split(" ");
+                    const apellido = apellidoArr.join(" ") || "";
+                    const dni = info.event.extendedProps?.dni || "";
+                    const telefono = info.event.extendedProps?.telefono || "";
+                    const fecha = info.event.start
+                        ? info.event.start.toLocaleDateString('es-AR')
+                        : "";
+                    const hora = info.event.start
+                        ? info.event.start.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })
+                        : (info.event.extendedProps?.rawHora || "");
+
+                    // 🧭 Reemplazamos el contenido del popover con datos completos
+                    popover.innerHTML = `
+                        <div class="popover-header">
+                            <strong>${nombre} ${apellido}</strong>
+                        </div>
+                        <div class="popover-body">
+                            <p><i class="fa-regular fa-id-card"></i> DNI: ${dni}</p>
+                            <p><i class="fa-solid fa-phone"></i> Tel: ${telefono}</p>
+                            <p><i class="fa-regular fa-calendar"></i> ${fecha}</p>
+                            <p><i class="fa-regular fa-clock"></i> ${hora}</p>
+                        </div>
+                    `;
+
+                    // 📍 Posicionamos el popover debajo del evento clickeado
+                    const rect = info.el.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+                    popover.style.top = `${rect.bottom + scrollTop + 8}px`;
+                    popover.style.left = `${rect.left + scrollLeft}px`;
+                    popover.style.display = "block";
+
+                    document.addEventListener('click', function cerrarPopover(e) {
+                        if (!popover.contains(e.target) && !info.el.contains(e.target)) {
+                            popover.style.display = "none";
+                            document.removeEventListener('click', cerrarPopover);
+                        }
+                    });
+
+                },
+
+
+            
+            });
+            calendar.render();
+
+            // Mostrar automáticamente los turnos del día actual al cargar el calendario
+            const hoy = new Date().toISOString().substring(0, 10);
+            cargarTurnosDeFecha(hoy);
+        })
+        .catch(err => console.error("Error cargando eventos calendario:", err));
+
+        // ==============================
+        // BUSCAR CLIENTE POR DNI
+        const inputDni = document.getElementById("input-dni");
+        const btnBuscar = document.getElementById("btn-buscar-cliente");
+        const nombreCliente = document.getElementById("nombre-cliente");
+        const apellidoCliente = document.getElementById("apellido-cliente");
+        const dniCliente = document.getElementById("dni-cliente");
+        const telefonoCliente = document.getElementById("telefono-cliente");
+        let idClienteSeleccionado = null;
+
+        // Contenedor del resultado
+        const resultadoCliente = document.getElementById("resultado-cliente");
+
+        async function buscarPacientePorDni() {
+            const dni = inputDni.value.trim();
+            if (!dni) {
+                alert("⚠️ Ingresá un DNI para buscar.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`http://127.0.0.1:3000/api/turnos/datos-paciente?dni=${dni}`, { credentials: 'include' });
+                const data = await res.json();
+
+                if (!data.success) {
+                // Limpiar datos anteriores si no se encuentra
+                nombreCliente.textContent = "";
+                apellidoCliente.textContent = "";
+                dniCliente.textContent = "";
+                telefonoCliente.textContent = "";
+                resultadoCliente.classList.remove("mostrar");
+                idClienteSeleccionado = null;
+                alert(`❌ ${data.error || "Paciente no encontrado"}`);
+                return;
+                }
+
+                const p = data.paciente;
+                idClienteSeleccionado = p.idCliente || null;
+                nombreCliente.textContent = p.nombre || "";
+                apellidoCliente.textContent = p.apellido || "";
+                dniCliente.textContent = p.dni || "";
+                telefonoCliente.textContent = p.telefono || "";
+                console.log("🟢 ID Cliente seleccionado:", idClienteSeleccionado);
+
+                // Activar animación
+                resultadoCliente.classList.add("mostrar");
+
+            } catch (error) {
+                console.error("Error al buscar paciente:", error);
+                alert("❌ Error al buscar paciente.");
+            }
+        }
+        // ==============================
+        // CARGAR HORARIOS DISPONIBLES
+        // ==============================
+        const fechaInput = document.getElementById("fechaTurno");
+        const horaSelect = document.getElementById("horaTurno");
+
+        if (fechaInput) {
+        fechaInput.addEventListener("change", async () => {
+            const fecha = fechaInput.value;
+            if (!fecha) return;
+
+                try {
+                    // 1️⃣ Obtener agenda base
+                    const resAgenda = await fetch("http://127.0.0.1:3000/api/turnos/agenda", { credentials: "include" });
+                    const dataAgenda = await resAgenda.json();
+
+                    if (!dataAgenda.success || !Array.isArray(dataAgenda.agenda)) {
+                        console.warn("No se pudo cargar agenda");
+                        return;
+                    }
+
+                    // 📅 Validar si la fecha elegida está dentro del rango de la agenda
+                    const dentroDeRango = dataAgenda.agenda.some(a => {
+                        const fechaInicio = new Date(a.fecha_inicio);
+                        const fechaFin = new Date(a.fecha_fin);
+                        const fechaElegida = new Date(fecha);
+
+                        return fechaElegida >= fechaInicio && fechaElegida <= fechaFin;
+                    });
+
+                    if (!dentroDeRango) {
+                        horaSelect.innerHTML = "";
+                        const opt = document.createElement("option");
+                        opt.value = "";
+                        opt.textContent = "Fuera de la agenda del profesional";
+                        horaSelect.appendChild(opt);
+                        horaSelect.disabled = true;
+                        return;
+                    }
+
+                    // 2️⃣ Generar array de horarios disponibles desde la agenda
+                    const horariosDisponibles = generarHorariosDesdeAgenda(dataAgenda.agenda, fecha);
+
+                    // 3️⃣ Obtener turnos ocupados en esa fecha
+                    const resOcupados = await fetch(`http://127.0.0.1:3000/api/turnos/por-fecha?fecha=${fecha}`, { credentials: "include" });
+                    const turnosOcupados = await resOcupados.json();
+
+                    const horasOcupadas = turnosOcupados.map(t => t.hora.substring(0,5));
+
+                    // 4️⃣ Filtrar horarios libres
+                    const horariosLibres = horariosDisponibles.filter(h => !horasOcupadas.includes(h));
+
+                    // 5️⃣ Rellenar el <select>
+                    horaSelect.innerHTML = "";
+                    if (horariosLibres.length === 0) {
+                        const opt = document.createElement("option");
+                        opt.value = "";
+                        opt.textContent = "Sin horarios disponibles";
+                        horaSelect.appendChild(opt);
+                        horaSelect.disabled = true;
+                    } else {
+                        horaSelect.disabled = false;
+                        horariosLibres.forEach(hora => {
+                        const opt = document.createElement("option");
+                        opt.value = hora;
+                        opt.textContent = hora;
+                        horaSelect.appendChild(opt);
+                    });
+                }
+
+                } catch (error) {
+                console.error("Error cargando horarios disponibles:", error);
+                }
+            });
+
+        }
+
+        /**
+        * Genera array de horarios disponibles en base a agenda + fecha
+        * @param {Array} agenda 
+        * @param {string} fecha YYYY-MM-DD
+        */
+        function generarHorariosDesdeAgenda(agenda, fecha) {
+            const [y, m, d] = fecha.split("-");
+            const fechaObj = new Date(Number(y), Number(m) - 1, Number(d));
+            const diaSemana = fechaObj.getDay();
+
+            // Filtrar agenda por día + rango de fechas
+            const horarios = [];
+
+            agenda.forEach(a => {
+                const fechaInicio = new Date(a.fecha_inicio);
+                const fechaFin = new Date(a.fecha_fin);
+
+                if (fechaObj < fechaInicio || fechaObj > fechaFin) return;
+
+                if (parseInt(a.dia_semana) !== diaSemana) return;
+
+                // 🕒 Generar intervalos
+                const inicio = a.hora_inicio.substring(0,5);
+                const fin = a.hora_fin.substring(0,5);
+                const paso = a.duracion.substring(0,5);
+
+                let [hi, mi] = inicio.split(":").map(Number);
+                const [hf, mf] = fin.split(":").map(Number);
+                const [pi, pm] = paso.split(":").map(Number);
+
+                while (hi < hf || (hi === hf && mi < mf)) {
+                    const h = `${String(hi).padStart(2,"0")}:${String(mi).padStart(2,"0")}`;
+                    horarios.push(h);
+                    mi += pm;
+                    hi += pi + Math.floor(mi / 60);
+                    mi = mi % 60;
+                }
+            });
+
+            return horarios;
+        }
+
+
+        if (btnAgendar) {
+        btnAgendar.addEventListener("click", () => {
+
+            function getFechaHoraArgentina() {
+                const ahora = new Date();
+
+                // Pasamos el tiempo a UTC (ms) y restamos 3 horas para llevarlo a UTC−3
+                const argentinaTime = new Date(ahora.getTime() - 3 * 60 * 60 * 1000);
+
+                const year = argentinaTime.getUTCFullYear();
+                const month = String(argentinaTime.getUTCMonth() + 1).padStart(2, "0");
+                const day = String(argentinaTime.getUTCDate()).padStart(2, "0");
+                const hours = String(argentinaTime.getUTCHours()).padStart(2, "0");
+                const minutes = String(argentinaTime.getUTCMinutes()).padStart(2, "0");
+                const seconds = String(argentinaTime.getUTCSeconds()).padStart(2, "0");
+
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            }
+
+            const idCliente = idClienteSeleccionado;
+            const dni = dniCliente.textContent.trim();
+            const nombre = nombreCliente.textContent.trim();
+            const apellido = apellidoCliente.textContent.trim();
+            const telefono = telefonoCliente.textContent.trim();
+            const fecha = document.getElementById("fechaTurno").value;
+            const hora = document.getElementById("horaTurno").value;
+            const horaYsegundos = `${hora}:00`;
+            const fecha_creacion = getFechaHoraArgentina();
+
+
+            console.log({
+                idClienteSeleccionado,
+                fecha,
+                hora
+                });
+
+            if (!dni || !fecha || !hora || !fecha_creacion || !idClienteSeleccionado) {
+                alert("⚠️ Completá todos los campos antes de reservar.");
+                return;
+            }
+
+            const datosTurno = {
+            turno: [
+                {
+                fecha: fecha,
+                hora: horaYsegundos,
+                fecha_creacion: fecha_creacion,
+                idCliente: idCliente,
+                }
+            ]
+            };
+
+            console.log({fecha, hora, fecha_creacion, idCliente});
+
+            // Envío al backend
+            fetch('http://127.0.0.1:3000/api/turnos/guardar-turno', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosTurno)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.success) {
+                alert(data.message); // 👈 avisa si el turno ya estaba ocupado
+                } else {
+                alert("✅ Turno guardado correctamente");
+                }
+            })
+            .catch(err => {
+                console.error("Error al guardar turno:", err);
+                alert("Ocurrió un error al guardar el turno.");
+            });
+            });
+        }
+
+
+
+        // 🔘 Click en botón
+        if (btnBuscar) {
+            btnBuscar.addEventListener("click", buscarPacientePorDni);
+        }
+
+        // ⌨️ Presionar Enter
+        if (inputDni) {
+            inputDni.addEventListener("keyup", (e) => {
+                if (e.key === "Enter") {
+                buscarPacientePorDni();
+        }
+
+        if(inputDni){
+            inputDni.addEventListener("click", () => {
+                inputDni.value = "";
+                nombreCliente.textContent = "";
+                apellidoCliente.textContent = "";
+                dniCliente.textContent = "";
+                telefonoCliente.textContent = "";
+                resultadoCliente.classList.remove("mostrar");
+            })
+        }
+        });
+        }
+
+    }
+
+    // ==============================
+    // CERRAR SESIÓN
+    // ==============================
+    document.getElementById("cerrar-sesion").addEventListener("click", () => {
+        sessionStorage.removeItem("usuario");
+        localStorage.removeItem("nota_general_turnos");
+        window.location.href = "../Pagina_Login/ingreso.html";
+    });
+
+});
+</script>
+
+</body>
+</html>

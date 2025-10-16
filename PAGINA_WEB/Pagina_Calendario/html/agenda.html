@@ -1,0 +1,46 @@
+<section class="container">
+  <div id="columna-izquierda">
+    <section class="config-panel">
+      <h3>Configurar agenda</h3>
+      
+      
+      <label>Rango de fechas:</label>
+      <input type="date" id="fechaInicio">
+      <input type="date" id="fechaFin">
+
+      <label>Días de trabajo:</label>
+      <div id="dias">
+        <button data-dia="1">L</button>
+        <button data-dia="2">M</button>
+        <button data-dia="3">X</button>
+        <button data-dia="4">J</button>
+        <button data-dia="5">V</button>
+        <button data-dia="6">S</button>
+        <button data-dia="0">D</button>
+      </div>
+
+      <label>Horario:</label>
+      Inicio: <select id="horaInicio"></select>
+      Fin: <select id="horaFin"></select>
+
+      <label>Selecciona el tiempo del turno:</label>
+      <select id="atencion"></select>
+      
+      <button id="aplicar" class="botones">Vizualizar en el Calendario</button>
+      <button id="guardar" class="botones">Guardar agenda</button>
+    </section>
+
+    <!-- section id="turnos-info">
+        <h3>Horario de atención</h3>
+        <div id="turno-detalle">Selecciona un turno en el calendario</div>
+        <button id="eliminar-turno" class="botones" style="display:none;">Eliminar Turno</button>
+        <button id="cerrar-info" class="botones">Cerrar</button>
+      </section -->
+  </div>
+
+    <!-- Calendario -->
+  <div id="columna-derecha">
+    <div id="calendar"></div>
+  </div>
+
+</section>

@@ -1,0 +1,46 @@
+/* ======= RESETEO BÁSICO ======= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ======= ESTRUCTURA BASE ======= */
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #e6e0f8 0%, #d6c9f3 100%);
+}
+
+/* El contenido principal ocupa el espacio disponible */
+main {
+  flex: 1;
+  padding: 40px 20px;
+}
+
+/* ======= FOOTER ======= */
+.footer {
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  background: linear-gradient(180deg, #701c97 0%, #88419e 90%);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(138, 99, 232, 0.3);
+  color: #ffffff;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 -4px 15px rgba(138, 99, 232, 0.1);
+  margin-top: auto; /* ✅ Esto lo empuja al fondo */
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ======= RESPONSIVO ======= */
+@media (max-width: 768px) {
+  .footer {
+    padding: 15px 10px;
+    font-size: 0.85rem;
+  }
+}

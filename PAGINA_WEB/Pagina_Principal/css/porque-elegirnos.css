@@ -1,0 +1,81 @@
+/* ======= SECCIÓN BENEFICIOS / POR QUÉ ELEGIR VERSUM ======= */
+.por-que {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #b59ee5 0%, #9669f8 100%);
+  backdrop-filter: blur(10px);
+}
+
+.por-que h2 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #4b0082; /* tono violeta oscuro */
+}
+
+.por-que .intro {
+  font-size: 1.3rem;
+  color: #5a4b8c; /* violeta medio */
+  max-width: 700px;
+  margin: 0 auto 60px auto;
+  line-height: 1.6;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.feature {
+  background: rgba(249, 249, 249, 0.425); /* más claro para contraste con el fondo violeta */
+  border-radius: 20px;
+  padding: 30px 20px;
+  width: 250px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.feature:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 15px rgba(75, 0, 130, 0.3); /* sombra violeta suave */
+}
+
+.feature .icon {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px auto;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4); /* fondo más claro dentro de la card */
+  color: #4b0082; /* ícono violeta */
+}
+
+.feature h3 {
+  color: #4b0082;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  color: #5a4b8c;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature {
+    width: 80%;
+    max-width: 300px;
+  }
+}

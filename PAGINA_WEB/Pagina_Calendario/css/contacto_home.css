@@ -1,0 +1,127 @@
+
+
+/* ==== Contenedor principal ==== */
+
+.Titulo-contacto {
+  text-align: center;
+  padding: 2rem;
+  color: #4b0082;
+;
+}
+
+.Titulo-contacto p, .info-contacto p {
+  font-size: 2 rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.planilla-contacto {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  width: 100%;
+  padding: 20px 20px 40px 20px;
+}
+
+.formato-formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  border-radius: 30px;
+  background: #f9f9f9;
+    box-shadow:  -20px 20px 60px #bebebe,
+    20px 20px 60px #ffffff;
+  max-width: 1000px;
+  width: 100%;
+  padding: 2rem;
+}
+
+
+/* ==== Formulario ==== */
+.formulario form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario input,
+.formulario textarea {
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+  border-color: #4b0082;
+  outline: none;
+  box-shadow: 0 0 5px rgba(34,49,95,0.3);
+}
+
+.contacto-contact-btn {
+  background: #4b0082;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.contacto-contact-btn:hover {
+  background: #8763e8;
+}
+/* ==== Información de contacto ==== */
+.info-contacto {
+  text-align: center;
+}
+
+.info-contacto h2 {
+  margin-bottom: 1rem;
+  color: #3d4049;
+}
+
+.links-contacto {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #25d366;
+  color: white;
+  text-decoration: none !important;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+  background: #1ebe5d;
+}
+
+.btn-whatsapp img {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-whatsapp a {
+  color:#bebebe !important;
+}
+
+.btn-whatsapp a:hover {
+  text-decoration: none !important;
+  color:#bebebe !important;
+}

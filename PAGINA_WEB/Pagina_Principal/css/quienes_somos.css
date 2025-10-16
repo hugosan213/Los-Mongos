@@ -1,0 +1,64 @@
+/* ======= SECCIÓN QUIÉNES SOMOS ======= */
+.quienes-somos {
+  display: flex;
+  justify-content: center; /* centramos todo horizontalmente */
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 80px 60px;
+  background: rgba(138, 99, 232, 0.12);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  margin: 40px auto;
+}
+
+.quienes-somos .texto {
+  flex: 1 1 400px;
+  max-width: 600px;
+  text-align: center; /* centramos el texto */
+  margin: 0 20px; /* un poco de espacio lateral */
+}
+
+.quienes-somos h2 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #4b0082;
+}
+
+.quienes-somos p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.quienes-somos .imagen {
+  flex: 1 1 400px;
+  display: flex;
+  justify-content: center; /* centramos la imagen horizontalmente */
+  align-items: center; /* centramos la imagen verticalmente dentro del flex */
+  margin-top: 20px;
+}
+
+.quienes-somos .imagen img {
+  width: 300px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(138, 99, 232, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.quienes-somos .imagen img:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(138, 99, 232, 0.3);
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .quienes-somos {
+    padding: 60px 20px;
+    flex-direction: column;
+  }
+
+  .quienes-somos .imagen {
+    margin-top: 30px;
+  }
+}
