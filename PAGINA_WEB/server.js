@@ -9,7 +9,7 @@ const PORT = 3000;
 
 // ✅ CORS para permitir frontend en 127.0.0.1:5500
 app.use(cors({
-  origin: "http://127.0.0.1:5500",
+  origin: ['http://localhost:5500', 'http://127.0.0.1:5500'],
   credentials: true
 }));
 
@@ -256,7 +256,6 @@ app.get("/api/turnos/por-fecha", (req, res) => {
   });
 });
 
-
 // =======================================================
 // 🔹 API para guardar agenda del médico/cancha
 // =======================================================
@@ -280,8 +279,8 @@ const insertarTurnos = (recursoId, queryInsert) => {
   const promises = turnos.map(t => {
     return new Promise((resolve, reject) => {
       const params = [
-        t.fechaInicio, t.fechaFin, normalizarHora(t.horaInicio), normalizarHora(t.horaFin), t.horario, t.diaSemana, recursoId, // para INSERT
-        t.fechaInicio, t.fechaFin, normalizarHora(t.horaInicio), normalizarHora(t.horaFin), t.horario, t.diaSemana, recursoId // para WHERE NOT EXISTS
+        t.fechaInicio, t.fechaFin, t.horario, normalizarHora(t.horaInicio), normalizarHora(t.horaFin), t.diaSemana, recursoId, // para INSERT
+        t.fechaInicio, t.fechaFin, t.horario, normalizarHora(t.horaInicio), normalizarHora(t.horaFin), t.diaSemana, recursoId // para WHERE NOT EXISTS
       ];
 
       db.query(queryInsert, params, (err2, result) => {
@@ -308,15 +307,15 @@ const insertarTurnos = (recursoId, queryInsert) => {
       if (err) return res.status(500).json({ success: false, message: "Error al obtener idRecurso" });
       if (results.length === 0) return res.status(404).json({ success: false, message: "Médico no encontrado" });
 
-      const recursoId = results[0].Recurso_idRecurso;
+      const recursoId = results[0].Recurso_idRecurso; 
       const queryInsert = `
         INSERT INTO agenda_medico 
-        (fecha_inicio, fecha_fin, hora_inicio, hora_fin, horario_turno, disponible, dia_semana, recurso_medico_idRecurso_Medico)
+        (fecha_inicio, fecha_fin, duracion, hora_inicio, hora_fin, disponible, dia_semana, recurso_medico_idRecurso_Medico)
         SELECT ?, ?, ?, ?, ?, 'D', ?, ?
         FROM DUAL
         WHERE NOT EXISTS (
           SELECT 1 FROM agenda_medico 
-          WHERE fecha_inicio = ? AND fecha_fin = ? AND hora_inicio = ? AND hora_fin = ? AND horario_turno = ? AND dia_semana = ? AND recurso_medico_idRecurso_Medico = ?
+          WHERE fecha_inicio = ? AND fecha_fin = ? AND duracion = ? AND hora_inicio = ? AND hora_fin = ? AND dia_semana = ? AND recurso_medico_idRecurso_Medico = ?
         );`;
       console.log("📩 Datos recibidos en /guardar-agenda (medico):", turnos);
       insertarTurnos(recursoId, queryInsert);
@@ -332,12 +331,12 @@ const insertarTurnos = (recursoId, queryInsert) => {
       const recursoId = results[0].Recurso_idRecurso;
       const queryInsert = `
         INSERT INTO agenda_cancha
-        (fecha_inicio, fecha_fin, hora_inicio, hora_fin, horario_turno, disponible, dia_semana, recurso_cancha_idRecurso_Cancha)
+        (fecha_inicio, fecha_fin, duracion, hora_inicio, hora_fin, disponible, dia_semana, recurso_cancha_idRecurso_Cancha)
         SELECT ?, ?, ?, ?, ?, 'D', ?, ?
         FROM DUAL
         WHERE NOT EXISTS (
           SELECT 1 FROM agenda_cancha 
-          WHERE fecha_inicio = ? AND fecha_fin = ? AND hora_inicio = ? AND hora_fin = ? AND horario_turno = ? AND dia_semana = ? AND recurso_cancha_idRecurso_Cancha = ?
+          WHERE fecha_inicio = ? AND fecha_fin = ? AND duracion = ? AND hora_inicio = ? AND hora_fin = ? AND dia_semana = ? AND recurso_cancha_idRecurso_Cancha = ?
           );`;
       console.log("📩 Datos recibidos en /guardar-agenda (cancha):", turnos);
       insertarTurnos(recursoId, queryInsert);
@@ -362,14 +361,14 @@ app.get("/api/turnos/agenda", (req, res) => {
   if (tipo === "medico") {
     queryRecurso = `SELECT Recurso_idRecurso FROM Recurso_Medico WHERE correo_electronico = ? LIMIT 1`;
     queryAgenda = `
-      SELECT fecha_inicio, fecha_fin, hora_inicio, hora_fin, horario_turno, dia_semana
+      SELECT fecha_inicio, fecha_fin, duracion, hora_inicio, hora_fin, dia_semana
       FROM agenda_medico
       WHERE recurso_medico_idRecurso_Medico = ?
     `;
   } else if (tipo === "cancha") {
     queryRecurso = `SELECT Recurso_idRecurso FROM Recurso_Cancha WHERE correo_electronico = ? LIMIT 1`;
     queryAgenda = `
-      SELECT fecha_inicio, fecha_fin, hora_inicio, hora_fin, horario_turno, dia_semana
+      SELECT fecha_inicio, fecha_fin, duracion, hora_inicio, hora_fin, dia_semana
       FROM agenda_cancha
       WHERE recurso_cancha_idRecurso_Cancha = ?
     `;
@@ -436,7 +435,138 @@ app.get("/api/turnos/datos-paciente", (req, res) => {
   });
 });
 
+// =======================================================
+// 🔹 API para guardar turno nuevo del paciente por HOME
+// =======================================================
+app.post("/api/turnos/guardar-turno", (req, res) => {
+  if (!req.session.user) return res.status(403).json({ error: "No estás logueado" });
+
+  const email = req.session.user.email;
+  const tipo = req.session.user.tipo;
+  const { turno } = req.body;
+
+  if (!turno || !Array.isArray(turno) || turno.length === 0) {
+    return res.status(400).json({ success: false, message: "No hay turnos para guardar" });
+  }
+
+  // 🧠 Función para verificar si un turno ya existe en la base
+  const verificarTurnoExistente = (fecha, hora, recursoId, idParticular) => {
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT COUNT(*) AS total
+        FROM reserva
+        WHERE Fecha = ? 
+          AND Hora = ? 
+          AND Recurso_idRecurso = ? 
+          AND (recurso_medico_idRecurso_Medico = ? OR recurso_cancha_idRecurso_Cancha = ?)
+      `;
+      db.query(query, [fecha, hora, recursoId, idParticular, idParticular], (err, results) => {
+        if (err) return reject(err);
+        resolve(results[0].total > 0);
+      });
+    });
+  };
+
+  // 🧱 Función para insertar turnos con validación
+  const insertarTurno = (recursoId, idParticular, queryInsert) => {
+    const promises = turno.map(async t => {
+      const existe = await verificarTurnoExistente(t.fecha, t.hora, recursoId, idParticular);
+      if (existe) {
+        console.log(`⚠️ Turno ya ocupado: ${t.fecha} ${t.hora}`);
+        return { ocupado: true, fecha: t.fecha, hora: t.hora };
+      }
+
+      return new Promise((resolve, reject) => {
+        const params = [
+          t.fecha, t.hora, t.fecha_creacion, t.idCliente, recursoId, idParticular,
+          t.fecha, t.hora, t.fecha_creacion, t.idCliente, recursoId, idParticular,
+        ];
+
+        db.query(queryInsert, params, (err2, result) => {
+          if (err2) reject(err2);
+          else resolve({ ocupado: false });
+        });
+      });
+    });
+
+    Promise.all(promises)
+      .then(resultados => {
+        const ocupados = resultados.filter(r => r && r.ocupado);
+        if (ocupados.length > 0) {
+          const msg = ocupados.map(o => `${o.fecha} ${o.hora}`).join(", ");
+          return res.json({
+            success: false,
+            message: `Los siguientes turnos ya fueron reservados: ${msg}`,
+          });
+        }
+
+        res.json({ success: true, message: "Turnos guardados correctamente ✅" });
+      })
+      .catch(e => {
+        console.error("❌ Error al insertar turnos:", e);
+        res.status(500).json({ success: false, message: "Error al guardar turnos" });
+      });
+  };
+
+  // 👨‍⚕️ Para médicos
+  if (tipo === "medico") {
+    const queryRecurso  = `SELECT Recurso_idRecurso, idRecurso_medico FROM Recurso_Medico WHERE correo_electronico = ? LIMIT 1`;
+    db.query(queryRecurso, [email], (err, results) => {
+      if (err) return res.status(500).json({ success: false, message: "Error al obtener idRecurso" });
+      if (results.length === 0) return res.status(404).json({ success: false, message: "Médico no encontrado" });
+
+      const { idRecurso_medico, Recurso_idRecurso } = results[0];
+
+      const queryInsert = `
+        INSERT INTO reserva 
+        (Fecha, Hora, Estado, fecha_creacion, Cliente_idCliente, Recurso_idRecurso, recurso_medico_idRecurso_Medico, recurso_cancha_idRecurso_Cancha)
+        SELECT ?, ?, 'confirmada', ?, ?, ?, ?, NULL
+        FROM DUAL
+        WHERE NOT EXISTS (
+          SELECT 1 FROM reserva 
+          WHERE Fecha = ? AND Hora = ? AND fecha_creacion = ? 
+          AND Cliente_idCliente = ? AND Recurso_idRecurso = ? 
+          AND recurso_medico_idRecurso_Medico = ? AND recurso_cancha_idRecurso_Cancha IS NULL
+        );
+      `;
+
+      console.log("📩 Datos recibidos en /guardar-turno (médico):", turno);
+      insertarTurno(Recurso_idRecurso, idRecurso_medico, queryInsert);
+    });
+
+  // 🏟️ Para canchas
+  } else if (tipo === "cancha") {
+    const queryRecurso = `SELECT Recurso_idRecurso FROM Recurso_Cancha WHERE correo_electronico = ? LIMIT 1`;
+    db.query(queryRecurso, [email], (err, results) => {
+      if (err) return res.status(500).json({ success: false, message: "Error al obtener idRecurso" });
+      if (results.length === 0) return res.status(404).json({ success: false, message: "Cancha no encontrada" });
+
+      const recursoId = results[0].Recurso_idRecurso;
+
+      const queryInsert = `
+        INSERT INTO reserva 
+        (Fecha, Hora, Estado, fecha_creacion, Cliente_idCliente, Recurso_idRecurso, recurso_medico_idRecurso_Medico, recurso_cancha_idRecurso_Cancha)
+        SELECT ?, ?, 'confirmada', ?, ?, ?, NULL, ?
+        FROM DUAL
+        WHERE NOT EXISTS (
+          SELECT 1 FROM reserva 
+          WHERE Fecha = ? AND Hora = ? AND fecha_creacion = ? 
+          AND Cliente_idCliente = ? AND Recurso_idRecurso = ? 
+          AND recurso_medico_idRecurso_Medico IS NULL AND recurso_cancha_idRecurso_Cancha = ?
+        );
+      `;
+
+      console.log("📩 Datos recibidos en /guardar-turno (cancha):", turno);
+      insertarTurno(recursoId, recursoId, queryInsert);
+    });
+
+  } else {
+    return res.status(400).json({ error: "Tipo de usuario inválido" });
+  }
+});
+// =======================================================
 // 🔹 API para listar clientes (usado por la página mostrar_bd.html)
+// =======================================================
 app.get('/api/cliente', (req, res) => {
   if (!db2) {
     console.error('BD CLIENTES no disponible (db2 undefined)');
@@ -453,8 +583,9 @@ app.get('/api/cliente', (req, res) => {
     res.json(results || []);
   });
 });
-
+// =======================================================
 // 🔹 API para crear cliente (recibe JSON)
+// =======================================================
 app.post('/api/cliente', async (req, res) => {
   if (!db2) return res.status(500).json({ error: 'BD CLIENTES no disponible' });
   const datos = req.body || {};
@@ -522,8 +653,9 @@ app.post('/api/cliente', async (req, res) => {
     res.status(500).json({ error: 'Error en servidor' });
   }
 });
-
+// =======================================================
 // 🔹 Endpoint para inspeccionar esquema de la tabla cliente
+// =======================================================
 app.get('/api/cliente/schema', (req, res) => {
   if (!db2) return res.status(500).json({ error: 'BD CLIENTES no disponible' });
   db2.query('DESCRIBE cliente', (err, rows) => {
@@ -534,8 +666,9 @@ app.get('/api/cliente/schema', (req, res) => {
     res.json(rows);
   });
 });
-
+// =======================================================
 // 🔹 API para listar servicios (usado por formulario de cliente)
+// =======================================================
 app.get('/api/servicio', (req, res) => {
   if (!db2) return res.status(500).json([]);
   db2.query('SELECT idServicio, nombre, precio, descripcion FROM servicio ORDER BY nombre ASC', (err, rows) => {
@@ -546,14 +679,15 @@ app.get('/api/servicio', (req, res) => {
     res.json(rows || []);
   });
 });
-
+// =======================================================
 // 🔹 API para listar servicios contratados con nombre de cliente y servicio
+// =======================================================
 app.get('/api/servicio_contratado', (req, res) => {
   if (!db2) return res.status(500).json([]);
   const sql = `
     SELECT sc.cliente_id AS cliente_id, sc.servicio_id AS servicio_id,
-           c.Nombre AS nombre_cliente, c.Apellido AS apellido_cliente,
-           s.nombre AS nombre_servicio, s.precio, s.descripcion
+    c.Nombre AS nombre_cliente, c.Apellido AS apellido_cliente,
+    s.nombre AS nombre_servicio, s.precio, s.descripcion
     FROM servicio_contratado sc
     LEFT JOIN cliente c ON sc.cliente_id = c.idCliente
     LEFT JOIN servicio s ON sc.servicio_id = s.idServicio
@@ -568,8 +702,9 @@ app.get('/api/servicio_contratado', (req, res) => {
   });
 });
 
-
+// =======================================================
 // 🔹 Servidor
+// =======================================================
 app.listen(PORT, () => {
   console.log(`🚀 Servidor en http://localhost:${PORT}`);
 });
