@@ -1,0 +1,62 @@
+/* === CONTACTO === */
+.header h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #222;
+  margin: 30px auto 10px auto;
+}
+.contacto-subtitle {
+  color: #555;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.contacto-contact-block {
+  background: #f0f4ff;
+  padding: 2.5rem 1rem;
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 700px;
+}
+
+.contacto-contact-block h2 {
+  font-size: 1.6rem;
+  color: #222;
+}
+.contacto-contact-block p {
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+.contacto-contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+.contacto-contact-btn {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+.contacto-contact-btn:hover {
+  background: #0056b3;
+}
+.contacto-contact-btn.whatsapp {
+  background: #25d366;
+}
+.contacto-contact-btn.whatsapp:hover {
+  background: #1eb346;
+}
+.contacto-contact-btn img {
+  height: 20px;
+  width: 20px;
+}

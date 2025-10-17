@@ -1,0 +1,58 @@
+/* === MENU DROPDOWN PRODUCTOS === */
+.mega-dropdown {
+  min-width: 420px;
+  max-width: 600px;
+  border-radius: 16px;
+  background: #f7f9fc;
+  box-shadow: 0 8px 32px rgba(37,99,235,0.10);
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  top: 60px !important;
+  padding: 32px 32px 24px 32px !important;
+}
+.mega-dropdown .row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+.mega-dropdown .col-6 {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 18px 18px 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 350px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.mega-dropdown .col-6:hover {
+  box-shadow: 0 8px 24px rgba(37,99,235,0.18);
+  transform: translateY(-2px) scale(1.03);
+}
+.mega-dropdown .menu-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+.mega-dropdown strong {
+  font-size: 1em;
+  color: #2563eb;
+}
+.mega-dropdown p {
+  font-size: 0.85em;
+  color: #555;
+  margin-bottom: 0;
+}
+.mega-dropdown h6 {
+  font-size: 1em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+  color: #222;
+}
+
+

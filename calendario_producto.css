@@ -1,0 +1,110 @@
+/* === CALENDARIO GOOGLE === */
+.calendario-contenedor {
+  padding: 30px;
+  margin: 100px auto 40px auto; /* Aumenta el margen superior para bajar el flex */
+}
+
+.calendario-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.calendario-nombre { /* NOMBRE DEL PRODUCTO*/
+  font-size: 4em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.calendario-descripcion { /* DESCRIPCION DEL PRODUCTO*/
+  font-size: 2em;
+  color: #555;
+  text-align: center;
+  max-width: 800px;
+}
+
+/* === PRODUCTO WHATSAPP === */
+
+
+
+/* === ANIMACIONES === */
+@keyframes aparecerUp {
+  from { opacity: 0; transform: translateY(100px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.calendario-flex, .calendariowspp-flex {
+  opacity: 0;
+  animation: aparecerUp 1s ease-out forwards;
+}
+.calendariowspp-flex {
+  animation-delay: 0.3s;
+}
+@keyframes aparecerDerecha {
+  from { opacity: 0; transform: translateX(300px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.calendario-info, .calendariowspp-info {
+  opacity: 0;
+  animation: aparecerDerecha 1s ease-out forwards;
+}
+.calendariowspp-info {
+  animation-delay: 0.3s;
+}
+
+
+/* === ANIMACION DE FONDO  === */
+body {
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(ellipse at center, #fffeea 0%, #fffeea 35%, #b7e8eb 100%);
+  overflow: hidden;
+}
+
+.ocean {
+  height: 5%;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #015871;
+}
+
+.wave {
+  background: url(https://cdn.kcak11.com/codepen_assets/wave_animation/wave.svg) repeat-x;
+  position: absolute;
+  top: -150px;
+  width: 6400px;
+  height: 198px;
+  animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+.wave:nth-of-type(2) {
+  top: -127px;
+  animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.125s infinite, swell 7s ease -1.25s infinite;
+  opacity: 1;
+}
+
+@keyframes wave {
+  0% {
+    margin-left: 0;
+  }
+  100% {
+    margin-left: -1600px;
+  }
+}
+@keyframes swell {
+  0%,
+  100% {
+    transform: translate3d(0, -25px, 0);
+  }
+  50% {
+    transform: translate3d(0, 5px, 0);
+  }
+}
+.endWave{
+  display:none;
+}
